@@ -16,8 +16,7 @@ namespace Movies_Catalogue.Models
             {
                 throw new Exception("The actor's name + last name is mandatory. Fill this field to continue.");
             }
-            if(Actor.Sex != "male"
-                || Actor.Sex != "female")
+            if(Actor.Sex.Length == 0)
             {
                 throw new Exception("The biological sex is mandatory. Choose, male or female to continue.");
             }
