@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Actor</title>
+</head>
+<body>
+    <h1>Add Actor</h1>
+    <form id="actor-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required><br><br>
+
+        <label for="placeOfBirth">Place of Birth:</label>
+        <input type="text" id="placeOfBirth" name="placeOfBirth" required><br><br>
+
+        <input type="submit" value="Add Actor">
+
+    </form>
+    <script>
+    const form = document.getElementById("actor-form");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get("name"),
+        sex: formData.get("sex"),
+        dateOfBirth: formData.get("dateOfBirth"),
+        placeOfBirth: formData.get("placeOfBirth")
+      };
+      fetch("/Actors", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to add actor");
+        }
+        alert("Actor added successfully");
+        form.reset();
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+    });
+    </script>
+</body>
+</html>

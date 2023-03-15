@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div id="container">
+    </div>
+
+    <script>
+        const container = document.getElementById("container");
+
+     
+      fetch("/MovieGenders", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+          for (let i = 0; i < data.length; i++) {
+              container.innerHTML += `<h4>ID: ${data[i].id} - Gender: ${data[i].gender}</h4>`
+          }
+      });
+    </script>
+</body>
+</html>

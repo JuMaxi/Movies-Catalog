@@ -25,5 +25,28 @@ namespace Movies_Catalogue.Controllers
             AccessDB.AccessNonQuery(Insert);
         }
 
+        [HttpGet]
+        public List<Actor> ShowActors()
+        {
+            List<Actor> ListActors = new List<Actor>();
+
+            string Select = "select * from Actors";
+
+            SqlDataReader Reader = AccessDB.AccessReader(Select);
+
+            while(Reader.Read())
+            {
+                Actor Actor = new Actor();
+
+                Actor.Id = Convert.ToInt32(Reader["Id"]);
+                Actor.Name = Convert.ToString(Reader["Name"]);
+                Actor.Sex = Convert.ToString(Reader["Sex"]);
+                Actor.PlaceOfBirth = Convert.ToString(Reader["PlaceOfBirth"]);
+                Actor.DateOfBirth = Convert.ToDateTime(Reader["DateOfBirth"]);
+
+                ListActors.Add(Actor);
+            }
+            return ListActors;
+        }
     }
 }
