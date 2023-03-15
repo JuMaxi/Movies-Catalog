@@ -11,18 +11,12 @@ namespace Movies_Catalogue.Controllers
     public class ActorController : ControllerBase
     {
         AccessDB AccessDB = new AccessDB();
+        AddActor NewAc = new AddActor();
 
         [HttpPost]
         public void AddActor(Actor NewActor)
         {
-            AddNewActor(NewActor);
-        }
-
-        public void AddNewActor(Actor NewActor)
-        {
-            string Insert = "insert into Actors (Name, Sex, PlaceOfBirth, DateOfBirth) values ('" + NewActor.Name + "','" + NewActor.Sex + "','" + NewActor.PlaceOfBirth + "','" + NewActor.DateOfBirth.ToString("yyyy-MM-dd") + "')";
-
-            AccessDB.AccessNonQuery(Insert);
+            NewAc.AddNewActor(NewActor);
         }
 
         [HttpGet]

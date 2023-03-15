@@ -11,18 +11,14 @@ namespace Movies_Catalogue.Controllers
     public class MovieGenderController : ControllerBase
     {
         AccessDB AccessDB = new AccessDB();
-
+        AddMGender AddGender = new AddMGender();
+        
         [HttpPost]
         public void AddMovieGender(MovieGender NewGender)
         {
-            AddNewGender(NewGender);
+            AddGender.AddNewGender(NewGender);
         }
-        public void AddNewGender(MovieGender NewGender)
-        { 
-            string Insert = "insert into Genders (Gender) values('" + NewGender.Gender + "')";
-            AccessDB.AccessNonQuery(Insert);
-        }
-
+        
         [HttpGet]
         public List<MovieGender> ShowMovieGenders()
         {
