@@ -12,7 +12,7 @@
         const container = document.getElementById("container");
 
      
-      fetch("/Actors", {
+      fetch("/Actor", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -21,7 +21,7 @@
       .then(response => response.json())
       .then(data => {
           for (let i = 0; i < data.length; i++) {
-              container.innerHTML += `<h4>ID: ${data[i].id} - Name: ${data[i].name} - Sex: ${data[i].name} - Born: On ${data[i].dateOfBirth} in ${data[i].placeOfBirth}</h4>`
+              container.innerHTML += `<h4>ID: ${data[i].id} - Name: ${data[i].name} - Sex: ${data[i].sex} - Born: On ${data[i].dateOfBirth} in ${data[i].placeOfBirth}</h4>`
           }
       });
     </script>

@@ -20,7 +20,7 @@ namespace Movies_Catalogue.Controllers
 
         public void AddNewActor(Actor NewActor)
         {
-            string Insert = "insert into Actor (Name, Sex, PlaceOfBirth, DateOfBirth) values ('" + NewActor.Name + "','" + NewActor.Sex + "','" + NewActor.PlaceOfBirth + "','" + NewActor.DateOfBirth.ToString("yyyy-MM-dd") + "')";
+            string Insert = "insert into Actors (Name, Sex, PlaceOfBirth, DateOfBirth) values ('" + NewActor.Name + "','" + NewActor.Sex + "','" + NewActor.PlaceOfBirth + "','" + NewActor.DateOfBirth.ToString("yyyy-MM-dd") + "')";
 
             AccessDB.AccessNonQuery(Insert);
         }
