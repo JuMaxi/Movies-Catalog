@@ -18,7 +18,7 @@ namespace Movies_Catalogue.Controllers
             AddNewGender(NewGender);
         }
         public void AddNewGender(MovieGender NewGender)
-        {
+        { 
             string Insert = "insert into Genders (Gender) values('" + NewGender.Gender + "')";
             AccessDB.AccessNonQuery(Insert);
         }

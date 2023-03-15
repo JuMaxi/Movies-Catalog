@@ -6,7 +6,7 @@ namespace Movies_Catalogue.Models
 {
     public class AccessDB
     {
-        string ConnectionString = "Server=LAPTOP-P4GEIO8K\\SQLEXPRESS;Database=MOVIES;User Id=sa;Password=S4root;";
+        string ConnectionString = "Server=LAPTOP-P4GEIO8K\\SQLEXPRESS;Database=MoviesCatalogue;User Id=sa;Password=S4root;";
 
         public void AccessNonQuery(string Action)
         {
