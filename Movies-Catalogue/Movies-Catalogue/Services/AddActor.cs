@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System;
+using Movies_Catalogue.Models;
 
-namespace Movies_Catalogue.Models
+namespace Movies_Catalogue.Services
 {
     public class AddActor
     {
         AccessDB AccessDB = new AccessDB();
-        ValidateActor ValidateActor= new ValidateActor();
+        ValidateActor ValidateActor = new ValidateActor();
 
         public void AddNewActor(Actor NewActor)
         {

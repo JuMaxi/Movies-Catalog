@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System;
+using Movies_Catalogue.Models;
 
-namespace Movies_Catalogue.Models
+namespace Movies_Catalogue.Validators
 {
     public class ValidateMovieGender
     {

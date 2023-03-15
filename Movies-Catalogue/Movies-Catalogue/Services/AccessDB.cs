@@ -2,7 +2,7 @@
 using System;
 using System.Data.SqlClient;
 
-namespace Movies_Catalogue.Models
+namespace Movies_Catalogue.Services
 {
     public class AccessDB
     {
