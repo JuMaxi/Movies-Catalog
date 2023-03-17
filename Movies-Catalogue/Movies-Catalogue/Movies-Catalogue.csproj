@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\AddCast.cs" />
     <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 

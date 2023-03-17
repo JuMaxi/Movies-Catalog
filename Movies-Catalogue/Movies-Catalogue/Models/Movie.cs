@@ -5,6 +5,7 @@ namespace Movies_Catalogue.Models
 {
     public class Movie
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string CoverImage { get; set; }
         public DateTime ReleaseDate { get; set; }
