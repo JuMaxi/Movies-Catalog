@@ -12,5 +12,17 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class MovieController : ControllerBase
     {
+        AddMovie AddMovie = new AddMovie();
+        BoxOffice BoxOffice= new BoxOffice();
+        ActorRole ActorRole = new ActorRole();
+
+        [HttpPost]
+
+        public void AddMo(Movie Movie, BoxOffice Box, ActorRole Cast)
+        {
+            AddMovie.NewMovie(Movie);
+            BoxOffice.AddBoxOffice(Box);
+            ActorRole.AddCast(Cast);
+        }
     }
 }
