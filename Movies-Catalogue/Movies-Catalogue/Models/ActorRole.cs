@@ -6,6 +6,7 @@ namespace Movies_Catalogue.Models
 {
     public class ActorRole
     {
+        public int Id { get; set; }
         public int ActorId { get; set; }
         public string Role { get; set; }
 

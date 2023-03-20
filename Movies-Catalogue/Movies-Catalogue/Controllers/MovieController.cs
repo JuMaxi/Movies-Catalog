@@ -14,15 +14,19 @@ namespace Movies_Catalogue.Controllers
     {
         AddMovie AddMovie = new AddMovie();
         BoxOffice BoxOffice= new BoxOffice();
-        ActorRole ActorRole = new ActorRole();
+        ActorRole ActorR = new ActorRole();
 
         [HttpPost]
 
-        public void AddMo(Movie Movie, BoxOffice Box, ActorRole Cast)
+        public void AddMo(Movie Movie)
         {
             AddMovie.NewMovie(Movie);
-            BoxOffice.AddBoxOffice(Box);
-            ActorRole.AddCast(Cast);
+            BoxOffice.AddBoxOffice(Movie.BoxOffice);
+
+            for(int Position = 0; Position < Movie.ActorRole.Count; Position++)
+            {
+                ActorR.AddCast(Movie.ActorRole[Position]);
+            }
         }
     }
 }

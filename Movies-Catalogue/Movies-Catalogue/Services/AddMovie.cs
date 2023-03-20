@@ -8,19 +8,23 @@ namespace Movies_Catalogue.Services
     public class AddMovie
     {
         AccessDB AccessDB = new AccessDB();
+        ActorRole ActorR = new ActorRole();
+
         public void NewMovie (Movie New)
         {
-            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin, Locations) values ('";
-            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + ",'" + New.Length + "','" + New.Origin;
+            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin, Locations, GenderId, ProducerId) values ('";
+            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + ",'" + New.Length.ToString("m") + "','" + New.Origin + "','" + New.Locations;
 
-            string Divid = "','";
-            for (int PositionLocations = 0; PositionLocations < New.Locations.Count; PositionLocations++)
+            for(int PositionGender = 0; PositionGender < New.GenderId.Count; PositionGender++)
             {
-                string Temp = New.Locations[PositionLocations];
-                Insert1 = Divid + Insert1 + Temp;
+                string Temp = "," + Convert.ToString(New.GenderId[PositionGender].Id);
+                Insert1 = Insert1 + Temp;
             }
 
-            AccessDB.AccessNonQuery(Insert1 + ",)");
+            Insert1 = Insert1 + New.ProducerId.Id + ",)";
+
+            AccessDB.AccessNonQuery(Insert1);
         }
+        
     }
 }
