@@ -12,7 +12,7 @@ namespace Movies_Catalogue.Services
         
         public void NewMovie (Movie New)
         {
-            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin, Locations, ProducerId) values ('";
+            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
             Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
 
             AccessDB.AccessNonQuery(Insert1);
@@ -26,6 +26,8 @@ namespace Movies_Catalogue.Services
             RelationalMovieGender(New, LastId);
 
             RelationalMovieProducer(New, LastId);
+
+            AddActorRole(New, LastId);
         }
 
         public int ReturnLastId()
@@ -37,7 +39,7 @@ namespace Movies_Catalogue.Services
 
             while (Reader.Read())
             {
-                LastId = Convert.ToInt32(Reader["Id"]);
+                LastId = Convert.ToInt32(Reader["last"]);
             }
 
             return LastId;
@@ -45,7 +47,7 @@ namespace Movies_Catalogue.Services
 
         public void AddBO(Movie New, int LastId)
         {
-            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + LastId + "," + New.BoxOffice.Budget.ToString("C2") + "," + New.BoxOffice.RevenueOpeningWeek.ToString("C2") + "," + New.BoxOffice.RevenueWorldWide.ToString("C2") + ")";
+            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
 
             AccessDB.AccessNonQuery(Insert);
         }
@@ -62,9 +64,9 @@ namespace Movies_Catalogue.Services
 
         public void AddActorRole(Movie New, int LastId)
         {
-            foreach (var Actor in New.ActorRole)
+            foreach (var Actor in New.MovieCast)
             {
-                string Insert = "insert into Castt (MovieId, ActorId, Role) values (" + LastId + "," + Actor.ActorId + ",'" + Actor.Role + "')";
+                string Insert = "insert into MovieCast (MovieId, ActorId, Role) values (" + LastId + "," + Actor.ActorId + ",'" + Actor.Role + "')";
 
                 AccessDB.AccessNonQuery(Insert);
             }
@@ -80,7 +82,7 @@ namespace Movies_Catalogue.Services
         }
         public void RelationalMovieProducer(Movie New, int LastId)
         {
-            string Insert = "inserto into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + New.ProducerId.Id + ")";
+            string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.ProducerId.Id + ")";
 
             AccessDB.AccessNonQuery(Insert);
         }
