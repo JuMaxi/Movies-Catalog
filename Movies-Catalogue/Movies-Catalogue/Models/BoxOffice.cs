@@ -11,12 +11,6 @@ namespace Movies_Catalogue.Models
         public double RevenueOpeningWeek { get; set; }
         public double RevenueWorldWide { get; set; }
 
-        AccessDB AccessDB = new AccessDB();
-        public void AddBoxOffice(BoxOffice BoxOffice)
-        {
-            string Insert = "insert into BoxOffice (Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + BoxOffice.Budget.ToString("C2")+ "," + BoxOffice.RevenueOpeningWeek.ToString("C2") + "," + BoxOffice.RevenueWorldWide.ToString("C2") + ")";
-
-            AccessDB.AccessNonQuery(Insert);
-        }
+       
     }
 }

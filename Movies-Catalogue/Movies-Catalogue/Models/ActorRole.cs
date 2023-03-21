@@ -9,13 +9,6 @@ namespace Movies_Catalogue.Models
         public int Id { get; set; }
         public int ActorId { get; set; }
         public string Role { get; set; }
-
-        AccessDB AccessDB = new AccessDB();
-        public void AddCast(ActorRole ActorRole)
-        {
-            string Insert = "insert into Castt (ActorId, Role) values(" + ActorRole.ActorId + "," + ActorRole.Role + ")";
-
-            AccessDB.AccessNonQuery(Insert);
-        }
+              
     }
 }
