@@ -23,11 +23,11 @@ namespace Movies_Catalogue.Services
 
             AddLocations(New, LastId);
 
+            AddActorRole(New, LastId);
+
             RelationalMovieGender(New, LastId);
 
             RelationalMovieProducer(New, LastId);
-
-            AddActorRole(New, LastId);
         }
 
         public int ReturnLastId()

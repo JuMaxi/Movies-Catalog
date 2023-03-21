@@ -27,10 +27,11 @@ namespace Movies_Catalogue.Validators
             {
                 throw new Exception("The place of Birth is mandatory. Fill this field to continue.");
             }
-            DateTime DateMovie = DateTime.Now;
+            
+            Movie ReleaseMovie= new Movie();
             DateTime FirstMovie = new DateTime(1895, 01, 01);
             if (Actor.DateOfBirth > DateTime.Now
-                || Actor.DateOfBirth > DateMovie
+                || Actor.DateOfBirth > ReleaseMovie.ReleaseDate
                 || Actor.DateOfBirth.Year < FirstMovie.Year)
 
             {
