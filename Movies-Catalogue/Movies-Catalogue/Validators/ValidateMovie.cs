@@ -40,37 +40,73 @@ namespace Movies_Catalogue.Validators
             }
         }
 
-        public int ValidateActorId(List<ActorRole> List)
+        public List<int> SelectTypeList(Movie New, string TypeList)
         {
-            int Check = 0;
+            List<int> ListId = new List<int>();
+           
+            if(TypeList == "ActorId")
+            {
+                foreach(var Position in New.MovieCast)
+                {
+                    ListId.Add(Position.Id);
+                }
+            }
+            else
+            {
+                foreach (var Position in New.GenderId)
+                {
+                    ListId.Add(Position.Id);
+                }
+            }
+
+            return ListId;
+        }
+        public string WriteSelect (List<int> ListId)
+        {
             string SelectCount = "";
 
-            for(int Position = 0; Position < List.Count; Position++)
+            for (int Position = 0; Position < ListId.Count; Position++)
             {
-                if (Position != (List.Count-1))
+                if (Position != (ListId.Count - 1))
                 {
-                    SelectCount = SelectCount + List[Position].ActorId + ",";
+                    SelectCount = SelectCount + ListId[Position] + ",";
                 }
                 else
                 {
-                    SelectCount = SelectCount + List[Position].ActorId;
+                    SelectCount = SelectCount + ListId[Position];
                 }
             }
-          
-            string Select = "select from Actors WHERE ID IN(" + SelectCount + ")";
+            return SelectCount;
+        }
+
+        public int ReturnId(List<int> ListId)
+        {
+            int Check = 0;
+            string Select = WriteSelect(ListId);
+
+            Select = "select from Actors WHERE ID IN(" + Select + ")";
 
             SqlDataReader Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
-                foreach(var ActorId in List)
+                foreach (var Id in ListId)
                 {
-                    if (ActorId.ActorId == Convert.ToInt32(Reader["Id"]))
+                    if (Id == Convert.ToInt32(Reader["Id"]))
                     {
                         Check = Check + 1;
                     }
                 }
             }
+            return Check;
+        }
+        public int ValidateActorId(Movie NewMovie)
+        {
+            string Type = "ActorId";
+
+            List<int> List = SelectTypeList(NewMovie, Type);
+            int Check = ReturnId(List);
+
             return Check;
         }
 
@@ -88,6 +124,16 @@ namespace Movies_Catalogue.Validators
                 }
             }
             return 0;
+        }
+
+        public int ValidateGenderId(Movie NewMovie)
+        {
+            string Type = "GenderId";
+
+            List<int> List = SelectTypeList(NewMovie, Type);
+            int Check = ReturnId(List);
+
+            return Check;
         }
 
     }
