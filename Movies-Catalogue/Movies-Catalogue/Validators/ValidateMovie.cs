@@ -43,23 +43,51 @@ namespace Movies_Catalogue.Validators
         public int ValidateActorId(List<ActorRole> List)
         {
             int Check = 0;
-            string Select = "select * from Actors";
-
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            string SelectCount = "";
 
             for(int Position = 0; Position < List.Count; Position++)
             {
-                int Id = List[Position].ActorId;
-
-                while (Reader.Read())
+                if (Position != (List.Count-1))
                 {
-                    if(Id == Convert.ToInt32(Reader["Id"]))
+                    SelectCount = SelectCount + List[Position].ActorId + ",";
+                }
+                else
+                {
+                    SelectCount = SelectCount + List[Position].ActorId;
+                }
+            }
+          
+            string Select = "select from Actors WHERE ID IN(" + SelectCount + ")";
+
+            SqlDataReader Reader = AccessDB.AccessReader(Select);
+
+            while (Reader.Read())
+            {
+                foreach(var ActorId in List)
+                {
+                    if (ActorId.ActorId == Convert.ToInt32(Reader["Id"]))
                     {
                         Check = Check + 1;
                     }
                 }
             }
             return Check;
+        }
+
+        public int ValidateProducerId(Producer Producer)
+        {
+            string Select = "select from Producer where Id=" + Producer.Id;
+
+            SqlDataReader Reader = AccessDB.AccessReader(Select);
+
+            while (Reader.Read())
+            {
+                if(Producer.Id == Convert.ToInt32(Reader["Id"]))
+                {
+                    return Producer.Id;
+                }
+            }
+            return 0;
         }
 
     }

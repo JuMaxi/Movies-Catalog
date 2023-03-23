@@ -9,26 +9,54 @@ namespace Movies_Catalogue.Services
     public class AddMovie
     {
         AccessDB AccessDB = new AccessDB();
+        ValidateMovie Validate = new ValidateMovie();
         
         public void NewMovie (Movie New)
         {
-            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
-            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
+            bool CheckData = CheckActorId(New);
 
-            AccessDB.AccessNonQuery(Insert1);
+            if(CheckData == true) 
+            {
+                string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
+                Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
 
-            int LastId = ReturnLastId();
+                AccessDB.AccessNonQuery(Insert1);
 
-            AddBO(New, LastId);
+                int LastId = ReturnLastId();
 
-            AddLocations(New, LastId);
+                AddBO(New, LastId);
 
-            AddActorRole(New, LastId);
+                AddLocations(New, LastId);
 
-            RelationalMovieGender(New, LastId);
+                AddActorRole(New, LastId);
 
-            RelationalMovieProducer(New, LastId);
+                RelationalMovieGender(New, LastId);
+
+                RelationalMovieProducer(New, LastId);
+            }
+            else
+            {
+                throw new Exception("Check the Id inserted, one or more are not valid. Fill out a valid Id to continue.");
+            }
+            
         }
+
+        public bool CheckActorId(Movie New)
+        {
+            int Count = Validate.ValidateActorId(New.MovieCast);
+            int ProducerId = Validate.ValidateProducerId(New.ProducerId);
+
+            if(Count == New.MovieCast.Count
+                && ProducerId == New.ProducerId.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public int ReturnLastId()
         {

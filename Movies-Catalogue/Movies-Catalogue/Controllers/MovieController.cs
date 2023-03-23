@@ -15,20 +15,11 @@ namespace Movies_Catalogue.Controllers
     {
         AddMovie AddMovie = new AddMovie();
         ValidateMovie ValidateMovie = new ValidateMovie();
-      
+
         [HttpPost]
         public void AddMo(Movie Movie)
         {
-            int CheckActorId = ValidateMovie.ValidateActorId(Movie.MovieCast);
-            if(Movie.MovieCast.Count == CheckActorId)
-            {
-                AddMovie.NewMovie(Movie);
-            }
-            else
-            {
-                throw new Exception("One or more Id typed doesn't exist. Type a valid Id to continue.");
-            }
-            
+            AddMovie.NewMovie(Movie);
         }
     }
 }
