@@ -1,4 +1,4 @@
-# Movies Catalog
+# Movies Catalogue
 
 
 **_This project is a work in progress_**
