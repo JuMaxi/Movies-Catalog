@@ -10,56 +10,29 @@ namespace Movies_Catalogue.Services
     {
         AccessDB AccessDB = new AccessDB();
         ValidateMovie Validate = new ValidateMovie();
-        
-        public void NewMovie (Movie New)
+
+        public void NewMovie(Movie New)
         {
-            bool CheckData = CheckDataIds(New);
+            Validate.CheckDataIds(New);
 
-            if(CheckData == true) 
-            {
-                string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
-                Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
+            string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
+            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
 
-                AccessDB.AccessNonQuery(Insert1);
+            AccessDB.AccessNonQuery(Insert1);
 
-                int LastId = ReturnLastId();
+            int LastId = ReturnLastId();
 
-                AddBO(New, LastId);
+            AddBO(New, LastId);
 
-                AddLocations(New, LastId);
+            AddLocations(New, LastId);
 
-                AddActorRole(New, LastId);
+            AddActorRole(New, LastId);
 
-                RelationalMovieGender(New, LastId);
+            RelationalMovieGender(New, LastId);
 
-                RelationalMovieProducer(New, LastId);
-            }
-            else
-            {
-                throw new Exception("Check the Id inserted, one or more are not valid. Fill out a valid Id to continue.");
-            }
-            
+            RelationalMovieProducer(New, LastId);
+
         }
-
-        public bool CheckDataIds(Movie New)
-        {
-            int ActorId = Validate.ValidateActorId(New);
-            int GenderId = Validate.ValidateGenderId(New);
-            int ProducerId = Validate.ValidateProducerId(New.ProducerId);
-
-            if(ActorId == New.MovieCast.Count
-                && GenderId == New.GenderId.Count
-                && ProducerId == New.ProducerId.Id)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
         public int ReturnLastId()
         {
             int LastId = 0;
@@ -103,7 +76,7 @@ namespace Movies_Catalogue.Services
         }
         public void RelationalMovieGender(Movie New, int LastId)
         {
-            foreach(var movieGender in New.GenderId)
+            foreach (var movieGender in New.GenderId)
             {
                 string Insert = "insert into RelationalMovieGender (MovieId, GenderId) values(" + LastId + "," + movieGender.Id + ")";
 

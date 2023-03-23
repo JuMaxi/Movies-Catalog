@@ -6,18 +6,18 @@ using Movies_Catalogue.Services;
 
 namespace Movies_Catalogue.Validators
 {
-    
+
     public class ValidateMovie
     {
         AccessDB AccessDB = new AccessDB();
         public void Validate(Movie NewMovie)
         {
-            if(NewMovie.Title == null
+            if (NewMovie.Title == null
                 || NewMovie.Title.Length == 0)
             {
                 throw new Exception("The Title is mandatory. Fill out this field to continue.");
             }
-            if(NewMovie.CoverImage == null
+            if (NewMovie.CoverImage == null
                 || NewMovie.CoverImage.Length == 0)
             {
                 throw new Exception("The Cover Image is mandatory. Fill out this field to continue.");
@@ -29,11 +29,11 @@ namespace Movies_Catalogue.Validators
             {
                 throw new Exception("The Release Date is invalid. Fill again this field with a valid date to continue.");
             }
-            if(NewMovie.Length == 0)
+            if (NewMovie.Length == 0)
             {
                 throw new Exception("The Movie's Length is mandatory and must be bigger than zero. Fill out this field with a valid value to continue");
             }
-            if(NewMovie.Origin == null
+            if (NewMovie.Origin == null
                 || NewMovie.Origin.Length == 0)
             {
                 throw new Exception("The Movie's Origin is mandatory. Fill out this field to continue.");
@@ -43,12 +43,12 @@ namespace Movies_Catalogue.Validators
         public List<int> SelectTypeList(Movie New, string TypeList)
         {
             List<int> ListId = new List<int>();
-           
-            if(TypeList == "Actors")
+
+            if (TypeList == "Actors")
             {
-                foreach(var Position in New.MovieCast)
+                foreach (var Position in New.MovieCast)
                 {
-                    ListId.Add(Position.Id);
+                    ListId.Add(Position.ActorId);
                 }
             }
             else
@@ -61,7 +61,7 @@ namespace Movies_Catalogue.Validators
 
             return ListId;
         }
-        public string WriteSelect (List<int> ListId)
+        public string WriteSelect(List<int> ListId)
         {
             string SelectCount = "";
 
@@ -84,7 +84,7 @@ namespace Movies_Catalogue.Validators
             int Check = 0;
             string Select = WriteSelect(ListId);
 
-            Select = "select from" +  Type + "WHERE ID IN(" + Select + ")";
+            Select = "select * from " + Type + " WHERE ID IN(" + Select + ")";
 
             SqlDataReader Reader = AccessDB.AccessReader(Select);
 
@@ -121,13 +121,13 @@ namespace Movies_Catalogue.Validators
 
         public int ValidateProducerId(Producer Producer)
         {
-            string Select = "select from Producer where Id=" + Producer.Id;
+            string Select = "select * from Producer where Id=" + Producer.Id;
 
             SqlDataReader Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
-                if(Producer.Id == Convert.ToInt32(Reader["Id"]))
+                if (Producer.Id == Convert.ToInt32(Reader["Id"]))
                 {
                     return Producer.Id;
                 }
@@ -135,7 +135,30 @@ namespace Movies_Catalogue.Validators
             return 0;
         }
 
-      
+        public void CheckDataIds(Movie New)
+        {
+            int ActorId = ValidateActorId(New);
+            int GenderId = ValidateGenderId(New);
+            int ProducerId = ValidateProducerId(New.ProducerId);
 
+            if (ActorId != New.MovieCast.Count)
+            {
+                throw new Exception("One or more ActorId is not valid. Fill out a valid Id do continue.");
+            }
+            else
+            {
+                if (GenderId != New.GenderId.Count)
+                {
+                    throw new Exception("One or more GenderId is not valid. Fill out a valid Id do continue.");
+                }
+                else
+                {
+                    if (ProducerId != New.ProducerId.Id)
+                    {
+                        throw new Exception("The Producer's Id is not valid. Fill out a valid Id do continue.");
+                    }
+                }
+            }
+        }
     }
 }
