@@ -13,6 +13,7 @@ namespace Movies_Catalogue.Services
 
         public void NewMovie(Movie New)
         {
+            Validate.Validate(New);
             Validate.CheckDataIds(New);
 
             string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
