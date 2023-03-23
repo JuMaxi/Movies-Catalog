@@ -44,7 +44,7 @@ namespace Movies_Catalogue.Validators
         {
             List<int> ListId = new List<int>();
            
-            if(TypeList == "ActorId")
+            if(TypeList == "Actors")
             {
                 foreach(var Position in New.MovieCast)
                 {
@@ -79,12 +79,12 @@ namespace Movies_Catalogue.Validators
             return SelectCount;
         }
 
-        public int ReturnId(List<int> ListId)
+        public int ReturnCountListIds(List<int> ListId, string Type)
         {
             int Check = 0;
             string Select = WriteSelect(ListId);
 
-            Select = "select from Actors WHERE ID IN(" + Select + ")";
+            Select = "select from" +  Type + "WHERE ID IN(" + Select + ")";
 
             SqlDataReader Reader = AccessDB.AccessReader(Select);
 
@@ -102,10 +102,19 @@ namespace Movies_Catalogue.Validators
         }
         public int ValidateActorId(Movie NewMovie)
         {
-            string Type = "ActorId";
+            string Type = "Actors";
 
             List<int> List = SelectTypeList(NewMovie, Type);
-            int Check = ReturnId(List);
+            int Check = ReturnCountListIds(List, Type);
+
+            return Check;
+        }
+        public int ValidateGenderId(Movie NewMovie)
+        {
+            string Type = "Genders";
+
+            List<int> List = SelectTypeList(NewMovie, Type);
+            int Check = ReturnCountListIds(List, Type);
 
             return Check;
         }
@@ -126,15 +135,7 @@ namespace Movies_Catalogue.Validators
             return 0;
         }
 
-        public int ValidateGenderId(Movie NewMovie)
-        {
-            string Type = "GenderId";
-
-            List<int> List = SelectTypeList(NewMovie, Type);
-            int Check = ReturnId(List);
-
-            return Check;
-        }
+      
 
     }
 }

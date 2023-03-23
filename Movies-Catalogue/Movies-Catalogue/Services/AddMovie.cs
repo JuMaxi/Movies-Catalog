@@ -13,7 +13,7 @@ namespace Movies_Catalogue.Services
         
         public void NewMovie (Movie New)
         {
-            bool CheckData = CheckActorId(New);
+            bool CheckData = CheckDataIds(New);
 
             if(CheckData == true) 
             {
@@ -41,12 +41,14 @@ namespace Movies_Catalogue.Services
             
         }
 
-        public bool CheckActorId(Movie New)
+        public bool CheckDataIds(Movie New)
         {
-            int Count = Validate.ValidateActorId(New.MovieCast);
+            int ActorId = Validate.ValidateActorId(New);
+            int GenderId = Validate.ValidateGenderId(New);
             int ProducerId = Validate.ValidateProducerId(New.ProducerId);
 
-            if(Count == New.MovieCast.Count
+            if(ActorId == New.MovieCast.Count
+                && GenderId == New.GenderId.Count
                 && ProducerId == New.ProducerId.Id)
             {
                 return true;
