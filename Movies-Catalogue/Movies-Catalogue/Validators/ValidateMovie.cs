@@ -58,7 +58,6 @@ namespace Movies_Catalogue.Validators
                         Check = Check + 1;
                     }
                 }
-                
             }
             return Check;
         }

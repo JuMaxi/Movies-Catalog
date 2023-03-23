@@ -17,7 +17,6 @@ namespace Movies_Catalogue.Controllers
         ValidateMovie ValidateMovie = new ValidateMovie();
       
         [HttpPost]
-
         public void AddMo(Movie Movie)
         {
             int CheckActorId = ValidateMovie.ValidateActorId(Movie.MovieCast);
