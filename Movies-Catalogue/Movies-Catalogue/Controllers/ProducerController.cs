@@ -11,38 +11,27 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class ProducerController : ControllerBase
     {
-        AddProducer AddProd = new AddProducer();
+        ActionProducer ActionProducer = new ActionProducer();
         AccessDB AccessDB = new AccessDB();
 
         [HttpPost]
         public void AddProducer (Producer NewProducer)
         {
-            AddProd.AddNewProducer (NewProducer);
+            ActionProducer.AddNewProducer (NewProducer);
         }
 
         [HttpGet]
         public List<Producer> ShowProducer()
         {
             List<Producer> ListProducer = new List<Producer>();
-
-            string Select = "select * from Producer";
-
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
-
-            while (Reader.Read())
-            {
-                Producer Producer = new Producer();
-
-                Producer.Id = Convert.ToInt32(Reader["Id"]);
-                Producer.Name = Convert.ToString(Reader["Name"]);
-                Producer.EstablishedDate = Convert.ToDateTime(Reader["EstablishedDate"]);
-                Producer.Place = Convert.ToString(Reader["Place"]);
-                Producer.NumberEmployees = Convert.ToInt32(Reader["NumberEmployees"]);
-                Producer.Website = Convert.ToString(Reader["Website"]);
-
-                ListProducer.Add(Producer);
-            }
+            ListProducer = ActionProducer.ShowProducers();
             return ListProducer;
+        }
+
+        [HttpPut]
+        public void UpdateProducer(Producer Producer)
+        {
+            ActionProducer.UpdateProducer(Producer);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace Movies_Catalogue.Services
 {
-    public class AddMovie
+    public class ActionMovie
     {
         AccessDB AccessDB = new AccessDB();
         ValidateMovie Validate = new ValidateMovie();

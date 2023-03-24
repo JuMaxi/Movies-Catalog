@@ -13,7 +13,7 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class MovieController : ControllerBase
     {
-        AddMovie AddMovie = new AddMovie();
+        ActionMovie AddMovie = new ActionMovie();
         ValidateMovie ValidateMovie = new ValidateMovie();
 
         [HttpPost]

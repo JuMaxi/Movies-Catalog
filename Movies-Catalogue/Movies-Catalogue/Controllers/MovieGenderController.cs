@@ -12,33 +12,27 @@ namespace Movies_Catalogue.Controllers
     public class MovieGenderController : ControllerBase
     {
         AccessDB AccessDB = new AccessDB();
-        AddMGender AddGender = new AddMGender();
+        ActionMGender ActionMGender = new ActionMGender();
         
         [HttpPost]
         public void AddMovieGender(MovieGender NewGender)
         {
-            AddGender.AddNewGender(NewGender);
+            ActionMGender.AddNewGender(NewGender);
         }
         
         [HttpGet]
         public List<MovieGender> ShowMovieGenders()
         {
             List<MovieGender> ListGender = new List<MovieGender>();
-
-            string Select = "select * from Genders";
-
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
-
-            while (Reader.Read())
-            {
-                MovieGender MovieGender = new MovieGender();
-
-                MovieGender.Id = Convert.ToInt32(Reader["Id"]);
-                MovieGender.Gender = Convert.ToString(Reader["Gender"]);
-                
-                ListGender.Add(MovieGender);
-            }
+            ListGender = ActionMGender.ShowGender();
             return ListGender;
         }
+
+        [HttpPut]
+        public void UpdateGender(MovieGender MovieGender)
+        {
+            ActionMGender.UpdateGender(MovieGender);
+        }
+
     }
 }

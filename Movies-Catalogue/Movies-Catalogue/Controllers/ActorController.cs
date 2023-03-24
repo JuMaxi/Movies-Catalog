@@ -12,36 +12,27 @@ namespace Movies_Catalogue.Controllers
     public class ActorController : ControllerBase
     {
         AccessDB AccessDB = new AccessDB();
-        AddActor NewAc = new AddActor();
+        ActionActor ActionActor = new ActionActor();
 
         [HttpPost]
         public void AddActor(Actor NewActor)
         {
-            NewAc.AddNewActor(NewActor);
+            ActionActor.AddNewActor(NewActor);
         }
 
         [HttpGet]
         public List<Actor> ShowActors()
         {
             List<Actor> ListActors = new List<Actor>();
+            ListActors = ActionActor.ShowActors();
 
-            string Select = "select * from Actors";
-
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
-
-            while(Reader.Read())
-            {
-                Actor Actor = new Actor();
-
-                Actor.Id = Convert.ToInt32(Reader["Id"]);
-                Actor.Name = Convert.ToString(Reader["Name"]);
-                Actor.Sex = Convert.ToString(Reader["Sex"]);
-                Actor.PlaceOfBirth = Convert.ToString(Reader["PlaceOfBirth"]);
-                Actor.DateOfBirth = Convert.ToDateTime(Reader["DateOfBirth"]);
-
-                ListActors.Add(Actor);
-            }
             return ListActors;
+        }
+
+        [HttpPut]
+        public void UpdateActor(Actor NewActor)
+        {
+            ActionActor.UpdateActor(NewActor);
         }
     }
 }
