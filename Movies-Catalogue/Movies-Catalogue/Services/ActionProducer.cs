@@ -53,7 +53,7 @@ namespace Movies_Catalogue.Services
 
         public bool CheckRelationalTable(int Id)
         {
-            string Select = "select from RelationalMovieProducer where Id=" + Id;
+            string Select = "select * from RelationalMovieProducer where ProducerId=" + Id;
 
             SqlDataReader Reader = AccessDB.AccessReader(Select);
 
@@ -64,10 +64,10 @@ namespace Movies_Catalogue.Services
                 int IdProducerDB = Convert.ToInt32(Reader["ProducerId"]);
                 if (Id == IdProducerDB)
                 {
-                    int MovieId = Convert.ToInt32(Reader["MovieId"]);
-                    throw new Exception("The Producer Id = " + IdProducerDB + " is related with the Movie Id= " + MovieId + ". Before you continue this delete, you need to change the ProducerId in the Table RelationalMovieProducer about this Movie Id.");
-
                     Delete = false;
+
+                    int MovieId = Convert.ToInt32(Reader["MovieId"]);
+                    throw new Exception("The Producer Id = " + IdProducerDB + " is related with the Movie Id= " + MovieId + ". Before you continue this delete, you need to Update the ProducerId about this Movie Id.");
                 }
             }
 
@@ -79,10 +79,6 @@ namespace Movies_Catalogue.Services
             
             if(Delete == true)
             {
-                string DeleteR = "delete from RelationalMovieProducer where Id=" + Id;
-
-                AccessDB.AccessNonQuery(DeleteR);
-
                 string DeleteP = "delete from Producer where Id= " + Id;
 
                 AccessDB.AccessNonQuery(DeleteP);

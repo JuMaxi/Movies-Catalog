@@ -35,7 +35,7 @@ namespace Movies_Catalogue.Controllers
         }
 
         [HttpDelete]
-        public void DeleteProducer(int Id)
+        public void DeleteProducer([FromQuery]int Id)
         {
             ActionProducer.DeleteProducer(Id);
         }
