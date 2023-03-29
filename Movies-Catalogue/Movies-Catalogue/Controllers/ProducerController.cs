@@ -15,9 +15,9 @@ namespace Movies_Catalogue.Controllers
         AccessDB AccessDB = new AccessDB();
 
         [HttpPost]
-        public void AddProducer (Producer NewProducer)
+        public void AddProducer(Producer NewProducer)
         {
-            ActionProducer.AddNewProducer (NewProducer);
+            ActionProducer.AddNewProducer(NewProducer);
         }
 
         [HttpGet]
@@ -33,5 +33,12 @@ namespace Movies_Catalogue.Controllers
         {
             ActionProducer.UpdateProducer(Producer);
         }
+
+        [HttpDelete]
+        public void DeleteProducer(int Id)
+        {
+            ActionProducer.DeleteProducer(Id);
+        }
+        
     }
 }
