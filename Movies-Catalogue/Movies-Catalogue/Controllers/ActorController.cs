@@ -34,5 +34,11 @@ namespace Movies_Catalogue.Controllers
         {
             ActionActor.UpdateActor(NewActor);
         }
+
+        [HttpDelete]
+        public void DeleteActor([FromQuery] int Id)
+        {
+            ActionActor.DeleteActor(Id);
+        }
     }
 }

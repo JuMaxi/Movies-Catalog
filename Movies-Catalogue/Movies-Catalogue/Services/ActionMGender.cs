@@ -45,6 +45,41 @@ namespace Movies_Catalogue.Services
             AccessDB.AccessNonQuery(Update);
         }
 
+        public bool CheckRelationalTable(int Id)
+        {
+            bool Delete = true;
+
+            string Select = "select * from RelationalMovieGender where GenderId=" + Id;
+
+            SqlDataReader Reader = AccessDB.AccessReader(Select);
+
+            while (Reader.Read())
+            {
+                int GenderId = Convert.ToInt32(Reader["GenderId"]);
+
+                if(Id == GenderId)
+                {
+                    Delete = false;
+
+                    int MovieId = Convert.ToInt32(Reader["MovieId"]);
+                    throw new Exception("The Gender Id = " + GenderId + " is related with the Movie Id= " + MovieId + ". Before you continue this delete, you need to Update the GenderId about this Movie Id.");
+                }
+            }
+
+            return Delete;
+        }
+
+        public void DeleteGender(int Id)
+        {
+            bool Delete = CheckRelationalTable(Id);
+
+            if(Delete == true)
+            {
+                string DeleteG = "delete from Genders where Id=" + Id;
+
+                AccessDB.AccessNonQuery(DeleteG);
+            }
+        }
        
     }
 }

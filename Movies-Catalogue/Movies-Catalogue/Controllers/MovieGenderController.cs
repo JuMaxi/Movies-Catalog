@@ -34,5 +34,11 @@ namespace Movies_Catalogue.Controllers
             ActionMGender.UpdateGender(MovieGender);
         }
 
+        [HttpDelete]
+        public void DeleteGender([FromQuery] int Id)
+        {
+            ActionMGender.DeleteGender(Id);
+        }
+
     }
 }

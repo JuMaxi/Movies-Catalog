@@ -47,5 +47,40 @@ namespace Movies_Catalogue.Services
 
             AccessDB.AccessNonQuery(Update);
         }
+
+        public bool CheckRelationalTable(int Id)
+        {
+            bool Delete = true;
+
+            string Select = "select * from MovieCast where ActorId=" + Id;
+
+            SqlDataReader Reader = AccessDB.AccessReader(Select);
+
+            while(Reader.Read())
+            {
+                int ActorId = Convert.ToInt32(Reader["ActorId"]);
+
+                if(Id == ActorId)
+                {
+                    Delete = false;
+
+                    int MovieId = Convert.ToInt32(Reader["MovieId"]);
+                    throw new Exception("The Actor Id = " + ActorId + " is related with the Movie Id = " + MovieId + ".Before you continue this delete, you need to Update the ActorId about this Movie Id.");
+                }
+            }
+            return Delete;
+        }
+
+        public void DeleteActor(int Id)
+        {
+            bool Delete = CheckRelationalTable(Id);
+
+            if(Delete == true)
+            {
+                string DeleteA = "delete from Actors where id=" + Id;
+
+                AccessDB.AccessNonQuery(DeleteA);
+            }
+        }
     }
 }
