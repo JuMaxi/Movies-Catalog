@@ -8,8 +8,14 @@ namespace Movies_Catalogue.Services
 {
     public class ActionMGender
     {
-        ValidateMovieGender ValidateMG = new ValidateMovieGender();
-        AccessDB AccessDB = new AccessDB();
+        IAccessDB AccessDB;
+        IValidateMovieGender ValidateMG;
+        
+        public ActionMGender(IAccessDB Access, IValidateMovieGender Validate)
+        {
+            AccessDB = Access;
+            ValidateMG = Validate;
+        }
 
         public void AddNewGender(MovieGender NewGender)
         {
@@ -25,7 +31,7 @@ namespace Movies_Catalogue.Services
 
             string Select = "select * from Genders";
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
@@ -51,7 +57,7 @@ namespace Movies_Catalogue.Services
 
             string Select = "select * from RelationalMovieGender where GenderId=" + Id;
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {

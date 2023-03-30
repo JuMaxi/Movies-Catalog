@@ -4,7 +4,11 @@ using Movies_Catalogue.Models;
 
 namespace Movies_Catalogue.Validators
 {
-    public class ValidateMovieGender
+    public interface IValidateMovieGender
+    {
+        void ValidateGender(MovieGender gender);
+    }
+    public class ValidateMovieGender : IValidateMovieGender
     {
         public void ValidateGender(MovieGender gender)
         {

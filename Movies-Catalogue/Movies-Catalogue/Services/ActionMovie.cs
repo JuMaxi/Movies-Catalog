@@ -8,13 +8,19 @@ namespace Movies_Catalogue.Services
 {
     public class ActionMovie
     {
-        AccessDB AccessDB = new AccessDB();
-        ValidateMovie Validate = new ValidateMovie();
+        IAccessDB AccessDB;
+        IValidateMovie ValidateMo;
+
+        public ActionMovie(IAccessDB Access, IValidateMovie Validate)
+        {
+            AccessDB = Access;
+            ValidateMo = Validate;
+        }
 
         public void NewMovie(Movie New)
         {
-            Validate.Validate(New);
-            Validate.CheckDataIds(New);
+            ValidateMo.Validate(New);
+            ValidateMo.CheckDataIds(New);
 
             string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
             Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
@@ -39,7 +45,7 @@ namespace Movies_Catalogue.Services
             int LastId = 0;
             string SelectLastId = "select MAX(Id) as last from Movies";
 
-            SqlDataReader Reader = AccessDB.AccessReader(SelectLastId);
+            var Reader = AccessDB.AccessReader(SelectLastId);
 
             while (Reader.Read())
             {

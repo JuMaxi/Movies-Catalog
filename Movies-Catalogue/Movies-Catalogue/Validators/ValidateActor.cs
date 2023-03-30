@@ -4,7 +4,12 @@ using Movies_Catalogue.Models;
 
 namespace Movies_Catalogue.Validators
 {
-    public class ValidateActor
+    public interface IValidateActor
+    {
+        void Validate(Actor Actor);
+    }
+       
+    public class ValidateActor : IValidateActor
     {
         public void Validate(Actor Actor)
         {

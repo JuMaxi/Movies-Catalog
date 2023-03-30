@@ -8,8 +8,14 @@ namespace Movies_Catalogue.Services
 {
     public class ActionActor
     {
-        AccessDB AccessDB = new AccessDB();
-        ValidateActor ValidateActor = new ValidateActor();
+        IAccessDB AccessDB;
+        IValidateActor ValidateActor;
+
+        public ActionActor(IAccessDB access, IValidateActor validate)
+        {
+            AccessDB = access;
+            ValidateActor = validate;
+        }
 
         public void AddNewActor(Actor NewActor)
         {
@@ -25,7 +31,7 @@ namespace Movies_Catalogue.Services
 
             string Select = "select * from Actors";
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
@@ -54,7 +60,7 @@ namespace Movies_Catalogue.Services
 
             string Select = "select * from MovieCast where ActorId=" + Id;
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while(Reader.Read())
             {

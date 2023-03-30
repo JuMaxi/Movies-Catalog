@@ -7,10 +7,18 @@ using System.ComponentModel.Design;
 
 namespace Movies_Catalogue.Services
 {
+    
     public class ActionProducer
     {
-        AccessDB AccessDB = new AccessDB();
-        ValidateProducer ValidateProducer = new ValidateProducer();
+        IAccessDB AccessDB;
+        IValidateProducer ValidateProducer;
+
+        public ActionProducer(IAccessDB Access, IValidateProducer Validate)
+        {
+            AccessDB = Access;
+            ValidateProducer = Validate;
+        }
+
         public void AddNewProducer(Producer NewProducer)
         {
             ValidateProducer.Validate(NewProducer);
@@ -26,7 +34,7 @@ namespace Movies_Catalogue.Services
 
             string Select = "select * from Producer";
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
@@ -55,7 +63,7 @@ namespace Movies_Catalogue.Services
         {
             string Select = "select * from RelationalMovieProducer where ProducerId=" + Id;
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             bool Delete = true;
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Movies_Catalogue.Models;
 using Movies_Catalogue.Services;
+using Movies_Catalogue.Validators;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,15 +12,19 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class MovieGenderController : ControllerBase
     {
-        AccessDB AccessDB = new AccessDB();
-        ActionMGender ActionMGender = new ActionMGender();
-        
+        ActionMGender ActionMGender;
+
+        public MovieGenderController()
+        {
+            ActionMGender = new ActionMGender(new AccessDB(), new ValidateMovieGender());
+        }
+
         [HttpPost]
         public void AddMovieGender(MovieGender NewGender)
         {
             ActionMGender.AddNewGender(NewGender);
         }
-        
+
         [HttpGet]
         public List<MovieGender> ShowMovieGenders()
         {

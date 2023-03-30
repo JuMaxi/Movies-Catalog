@@ -6,10 +6,21 @@ using Movies_Catalogue.Services;
 
 namespace Movies_Catalogue.Validators
 {
-
-    public class ValidateMovie
+    public interface IValidateMovie
     {
-        AccessDB AccessDB = new AccessDB();
+        void Validate(Movie NewMovie);
+        List<int> SelectTypeList(Movie New, string TypeList);
+        string WriteSelect(List<int> ListId);
+        int ReturnCountListIds(List<int> ListId, string Type);
+        int ValidateActorId(Movie NewMovie);
+        int ValidateGenderId(Movie NewMovie);
+        int ValidateProducerId(Producer Producer);
+        void CheckDataIds(Movie New);
+    }
+
+    public class ValidateMovie : IValidateMovie
+    {
+        IAccessDB AccessDB;
         public void Validate(Movie NewMovie)
         {
             if (NewMovie.Title == null
@@ -86,7 +97,7 @@ namespace Movies_Catalogue.Validators
 
             Select = "select * from " + Type + " WHERE ID IN(" + Select + ")";
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
@@ -123,7 +134,7 @@ namespace Movies_Catalogue.Validators
         {
             string Select = "select * from Producer where Id=" + Producer.Id;
 
-            SqlDataReader Reader = AccessDB.AccessReader(Select);
+            var Reader = AccessDB.AccessReader(Select);
 
             while (Reader.Read())
             {
