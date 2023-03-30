@@ -10,7 +10,7 @@ namespace Movies_Catalogue.Services
         void AccessNonQuery(string Action);
         IDataReader AccessReader(string Action);
     }
-
+   
     public class AccessDB : IAccessDB
     {
         string ConnectionString = "Server=LAPTOP-P4GEIO8K\\SQLEXPRESS;Database=MoviesCatalogue;User Id=sa;Password=S4root;";
@@ -25,7 +25,6 @@ namespace Movies_Catalogue.Services
                 Command.ExecuteNonQuery();
             }
         }
-        //public SqlDataReader AccessReader(string Action)
         public IDataReader AccessReader(string Action)
         {
             SqlConnection Connection = new SqlConnection(ConnectionString);

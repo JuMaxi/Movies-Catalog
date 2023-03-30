@@ -40,7 +40,7 @@ namespace Movies_Catalogue.Services
             RelationalMovieProducer(New, LastId);
 
         }
-        public int ReturnLastId()
+        private int ReturnLastId()
         {
             int LastId = 0;
             string SelectLastId = "select MAX(Id) as last from Movies";
@@ -55,14 +55,14 @@ namespace Movies_Catalogue.Services
             return LastId;
         }
 
-        public void AddBO(Movie New, int LastId)
+        private void AddBO(Movie New, int LastId)
         {
             string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
 
             AccessDB.AccessNonQuery(Insert);
         }
 
-        public void AddLocations(Movie New, int LastId)
+        private void AddLocations(Movie New, int LastId)
         {
             foreach (var Location in New.Locations)
             {
@@ -72,7 +72,7 @@ namespace Movies_Catalogue.Services
             }
         }
 
-        public void AddActorRole(Movie New, int LastId)
+        private void AddActorRole(Movie New, int LastId)
         {
             foreach (var Actor in New.MovieCast)
             {
@@ -81,7 +81,7 @@ namespace Movies_Catalogue.Services
                 AccessDB.AccessNonQuery(Insert);
             }
         }
-        public void RelationalMovieGender(Movie New, int LastId)
+        private void RelationalMovieGender(Movie New, int LastId)
         {
             foreach (var movieGender in New.GenderId)
             {
@@ -90,7 +90,7 @@ namespace Movies_Catalogue.Services
                 AccessDB.AccessNonQuery(Insert);
             }
         }
-        public void RelationalMovieProducer(Movie New, int LastId)
+        private void RelationalMovieProducer(Movie New, int LastId)
         {
             string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.ProducerId.Id + ")";
 

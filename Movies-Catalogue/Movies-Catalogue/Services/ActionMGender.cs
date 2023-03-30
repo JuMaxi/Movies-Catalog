@@ -51,7 +51,7 @@ namespace Movies_Catalogue.Services
             AccessDB.AccessNonQuery(Update);
         }
 
-        public bool CheckRelationalTable(int Id)
+        private bool CheckRelationalTable(int Id)
         {
             bool Delete = true;
 

@@ -9,18 +9,18 @@ namespace Movies_Catalogue.Validators
     public interface IValidateMovie
     {
         void Validate(Movie NewMovie);
-        List<int> SelectTypeList(Movie New, string TypeList);
-        string WriteSelect(List<int> ListId);
-        int ReturnCountListIds(List<int> ListId, string Type);
-        int ValidateActorId(Movie NewMovie);
-        int ValidateGenderId(Movie NewMovie);
-        int ValidateProducerId(Producer Producer);
         void CheckDataIds(Movie New);
     }
 
     public class ValidateMovie : IValidateMovie
     {
         IAccessDB AccessDB;
+
+        public ValidateMovie(IAccessDB Access)
+        {
+            AccessDB = Access;
+        }
+
         public void Validate(Movie NewMovie)
         {
             if (NewMovie.Title == null
@@ -51,7 +51,7 @@ namespace Movies_Catalogue.Validators
             }
         }
 
-        public List<int> SelectTypeList(Movie New, string TypeList)
+        private List<int> SelectTypeList(Movie New, string TypeList)
         {
             List<int> ListId = new List<int>();
 
@@ -72,7 +72,7 @@ namespace Movies_Catalogue.Validators
 
             return ListId;
         }
-        public string WriteSelect(List<int> ListId)
+        private string WriteSelect(List<int> ListId)
         {
             string SelectCount = "";
 
@@ -90,7 +90,7 @@ namespace Movies_Catalogue.Validators
             return SelectCount;
         }
 
-        public int ReturnCountListIds(List<int> ListId, string Type)
+        private int ReturnCountListIds(List<int> ListId, string Type)
         {
             int Check = 0;
             string Select = WriteSelect(ListId);
@@ -111,7 +111,7 @@ namespace Movies_Catalogue.Validators
             }
             return Check;
         }
-        public int ValidateActorId(Movie NewMovie)
+        private int ValidateActorId(Movie NewMovie)
         {
             string Type = "Actors";
 
@@ -120,7 +120,7 @@ namespace Movies_Catalogue.Validators
 
             return Check;
         }
-        public int ValidateGenderId(Movie NewMovie)
+        private int ValidateGenderId(Movie NewMovie)
         {
             string Type = "Genders";
 
@@ -130,7 +130,7 @@ namespace Movies_Catalogue.Validators
             return Check;
         }
 
-        public int ValidateProducerId(Producer Producer)
+        private int ValidateProducerId(Producer Producer)
         {
             string Select = "select * from Producer where Id=" + Producer.Id;
 

@@ -14,10 +14,11 @@ namespace Movies_Catalogue.Controllers
     public class MovieController : ControllerBase
     {
         ActionMovie ActionMovie;
-
+        AccessDB AccessDB;
         public MovieController() 
         {
-            ActionMovie = new ActionMovie(new AccessDB(), new ValidateMovie());
+            AccessDB = new AccessDB();
+            ActionMovie = new ActionMovie(new AccessDB(), new ValidateMovie(AccessDB));
         }
 
         [HttpPost]
