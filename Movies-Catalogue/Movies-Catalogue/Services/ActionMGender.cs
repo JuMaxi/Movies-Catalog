@@ -6,7 +6,14 @@ using System.Data.SqlClient;
 
 namespace Movies_Catalogue.Services
 {
-    public class ActionMGender
+    public interface IActionMGender
+    {
+        void AddNewGender(MovieGender NewGender);
+        List<MovieGender> ShowGender();
+        void UpdateGender(MovieGender MovieGender);
+        void DeleteGender(int Id);
+    }
+    public class ActionMGender : IActionMGender
     {
         IAccessDB AccessDB;
         IValidateMovieGender ValidateMG;

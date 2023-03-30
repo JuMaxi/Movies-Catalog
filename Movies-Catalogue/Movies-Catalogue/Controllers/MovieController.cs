@@ -13,12 +13,11 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class MovieController : ControllerBase
     {
-        ActionMovie ActionMovie;
-        AccessDB AccessDB;
-        public MovieController() 
+        IActionMovie ActionMovie;
+        public MovieController(IActionMovie Movie) 
         {
-            AccessDB = new AccessDB();
-            ActionMovie = new ActionMovie(new AccessDB(), new ValidateMovie(AccessDB));
+            ActionMovie = Movie;
+            
         }
 
         [HttpPost]

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Movies_Catalogue.Models;
 using Movies_Catalogue.Services;
-using Movies_Catalogue.Validators;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 
 namespace Movies_Catalogue.Controllers
 {
@@ -12,11 +9,11 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class ActorController : ControllerBase
     {
-        ActionActor ActionActor;
+        IActionActor ActionActor;
 
-        public ActorController()
+        public ActorController(IActionActor actionActor)
         {
-            ActionActor = new ActionActor(new AccessDB(), new ValidateActor());
+            ActionActor = actionActor;
         }
 
         [HttpPost]

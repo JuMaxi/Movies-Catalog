@@ -6,10 +6,15 @@ using System.Data.SqlClient;
 
 namespace Movies_Catalogue.Services
 {
-    public class ActionMovie
+    public interface IActionMovie
+    {
+        void NewMovie(Movie New);
+    }
+    public class ActionMovie : IActionMovie
     {
         IAccessDB AccessDB;
         IValidateMovie ValidateMo;
+        
 
         public ActionMovie(IAccessDB Access, IValidateMovie Validate)
         {

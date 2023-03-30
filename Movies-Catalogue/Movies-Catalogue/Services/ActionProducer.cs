@@ -7,8 +7,15 @@ using System.ComponentModel.Design;
 
 namespace Movies_Catalogue.Services
 {
+    public interface IActionProducer
+    {
+        void AddNewProducer(Producer NewProducer);
+        List<Producer> ShowProducers();
+        void UpdateProducer(Producer Producer);
+        void DeleteProducer(int Id);
+    }
     
-    public class ActionProducer
+    public class ActionProducer : IActionProducer
     {
         IAccessDB AccessDB;
         IValidateProducer ValidateProducer;

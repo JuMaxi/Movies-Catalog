@@ -6,7 +6,15 @@ using System.Data.SqlClient;
 
 namespace Movies_Catalogue.Services
 {
-    public class ActionActor
+    public interface IActionActor
+    {
+        void AddNewActor(Actor NewActor);
+        void DeleteActor(int Id);
+        List<Actor> ShowActors();
+        void UpdateActor(Actor Actor);
+    }
+
+    public class ActionActor : IActionActor
     {
         IAccessDB AccessDB;
         IValidateActor ValidateActor;
@@ -62,11 +70,11 @@ namespace Movies_Catalogue.Services
 
             var Reader = AccessDB.AccessReader(Select);
 
-            while(Reader.Read())
+            while (Reader.Read())
             {
                 int ActorId = Convert.ToInt32(Reader["ActorId"]);
 
-                if(Id == ActorId)
+                if (Id == ActorId)
                 {
                     Delete = false;
 
@@ -81,7 +89,7 @@ namespace Movies_Catalogue.Services
         {
             bool Delete = CheckRelationalTable(Id);
 
-            if(Delete == true)
+            if (Delete == true)
             {
                 string DeleteA = "delete from Actors where id=" + Id;
 

@@ -12,11 +12,11 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class ProducerController : ControllerBase
     {
-        ActionProducer ActionProducer;
+        IActionProducer ActionProducer;
 
-        public ProducerController() 
+        public ProducerController(IActionProducer ActionPro) 
         {
-            ActionProducer = new ActionProducer(new AccessDB(), new ValidateProducer());
+            ActionProducer = ActionPro;
         }
 
         [HttpPost]

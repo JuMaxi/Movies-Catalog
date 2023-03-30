@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Movies_Catalogue.Services;
+using Movies_Catalogue.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,19 @@ namespace Movies_Catalogue
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Registering interfaces
+            services.AddTransient<IActionActor, ActionActor>();
+            services.AddTransient<IValidateActor, ValidateActor>();
+            services.AddTransient<IAccessDB, AccessDB>();
+
+            services.AddTransient<IActionMGender, ActionMGender>();
+            services.AddTransient<IValidateMovieGender, ValidateMovieGender>();
+            
+            services.AddTransient<IActionProducer, ActionProducer>();
+            services.AddTransient<IValidateProducer, ValidateProducer>();
+            
+            services.AddTransient<IActionMovie, ActionMovie>();
+            services.AddTransient<IValidateMovie, ValidateMovie>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -33,6 +48,7 @@ namespace Movies_Catalogue
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movies_Catalogue", Version = "v1" });
             });
         }
+      
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -12,11 +12,11 @@ namespace Movies_Catalogue.Controllers
     [Route("[controller]")]
     public class MovieGenderController : ControllerBase
     {
-        ActionMGender ActionMGender;
+        IActionMGender ActionMGender;
 
-        public MovieGenderController()
+        public MovieGenderController(IActionMGender ActionMG)
         {
-            ActionMGender = new ActionMGender(new AccessDB(), new ValidateMovieGender());
+            ActionMGender = ActionMG;
         }
 
         [HttpPost]
