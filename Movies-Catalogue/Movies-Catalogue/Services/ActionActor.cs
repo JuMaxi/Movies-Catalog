@@ -3,17 +3,11 @@ using System;
 using Movies_Catalogue.Models;
 using Movies_Catalogue.Validators;
 using System.Data.SqlClient;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Services
 {
-    public interface IActionActor
-    {
-        void AddNewActor(Actor NewActor);
-        void DeleteActor(int Id);
-        List<Actor> ShowActors();
-        void UpdateActor(Actor Actor);
-    }
-
     public class ActionActor : IActionActor
     {
         IAccessDB AccessDB;

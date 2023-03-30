@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Movies_Catalogue.Models;
 using Movies_Catalogue.Services;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Validators
 {
-    public interface IValidateMovie
-    {
-        void Validate(Movie NewMovie);
-        void CheckDataIds(Movie New);
-    }
-
     public class ValidateMovie : IValidateMovie
     {
         IAccessDB AccessDB;

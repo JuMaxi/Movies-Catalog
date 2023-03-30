@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using Movies_Catalogue.Validators;
 using Movies_Catalogue.Models;
 using System.Data.SqlClient;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Services
 {
-    public interface IActionMovie
-    {
-        void NewMovie(Movie New);
-    }
     public class ActionMovie : IActionMovie
     {
         IAccessDB AccessDB;

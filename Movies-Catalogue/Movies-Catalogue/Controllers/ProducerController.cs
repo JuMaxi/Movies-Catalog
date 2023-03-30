@@ -5,6 +5,7 @@ using Movies_Catalogue.Validators;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Controllers
 {

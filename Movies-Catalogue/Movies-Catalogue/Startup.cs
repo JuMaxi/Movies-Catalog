@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue
 {

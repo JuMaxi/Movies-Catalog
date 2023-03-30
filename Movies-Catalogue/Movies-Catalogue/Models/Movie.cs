@@ -14,7 +14,7 @@ namespace Movies_Catalogue.Models
         public string Origin { get; set; } // ok
         public BoxOffice BoxOffice { get; set; } 
         public List<string> Locations { get; set; }    
-        public List<ActorRole> MovieCast { get; set; } 
+        public List<MovieCast> MovieCast { get; set; } 
         public List<MovieGender> GenderId { get; set; } 
         public Producer ProducerId { get; set; } 
     }

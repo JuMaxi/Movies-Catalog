@@ -2,6 +2,7 @@
 using Movies_Catalogue.Models;
 using Movies_Catalogue.Services;
 using System.Collections.Generic;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Controllers
 {

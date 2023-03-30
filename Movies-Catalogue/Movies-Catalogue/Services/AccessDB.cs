@@ -2,15 +2,10 @@
 using System;
 using System.Data.SqlClient;
 using System.Data;
+using Movies_Catalogue.Interfacies;
 
 namespace Movies_Catalogue.Services
 {
-    public interface IAccessDB
-    {
-        void AccessNonQuery(string Action);
-        IDataReader AccessReader(string Action);
-    }
-   
     public class AccessDB : IAccessDB
     {
         string ConnectionString = "Server=LAPTOP-P4GEIO8K\\SQLEXPRESS;Database=MoviesCatalogue;User Id=sa;Password=S4root;";

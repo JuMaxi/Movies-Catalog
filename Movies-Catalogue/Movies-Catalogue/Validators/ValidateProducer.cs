@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
 using Movies_Catalogue.Models;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Validators
 {
-    public interface IValidateProducer
-    {
-        void Validate(Producer Producer);
-    }
     public class ValidateProducer : IValidateProducer
     {
         public void Validate(Producer Producer)

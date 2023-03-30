@@ -3,16 +3,11 @@ using System;
 using Movies_Catalogue.Validators;
 using Movies_Catalogue.Models;
 using System.Data.SqlClient;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Services
 {
-    public interface IActionMGender
-    {
-        void AddNewGender(MovieGender NewGender);
-        List<MovieGender> ShowGender();
-        void UpdateGender(MovieGender MovieGender);
-        void DeleteGender(int Id);
-    }
     public class ActionMGender : IActionMGender
     {
         IAccessDB AccessDB;

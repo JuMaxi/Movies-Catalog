@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
 using Movies_Catalogue.Models;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Validators
 {
-    public interface IValidateMovieGender
-    {
-        void ValidateGender(MovieGender gender);
-    }
     public class ValidateMovieGender : IValidateMovieGender
     {
         public void ValidateGender(MovieGender gender)

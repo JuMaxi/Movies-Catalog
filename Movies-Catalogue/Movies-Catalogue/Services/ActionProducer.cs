@@ -4,17 +4,11 @@ using System.Collections.Generic;
 using Movies_Catalogue.Validators;
 using System.Data.SqlClient;
 using System.ComponentModel.Design;
+using Movies_Catalogue.Interfacies;
+using Movies_Catalogue.Interfaces;
 
 namespace Movies_Catalogue.Services
 {
-    public interface IActionProducer
-    {
-        void AddNewProducer(Producer NewProducer);
-        List<Producer> ShowProducers();
-        void UpdateProducer(Producer Producer);
-        void DeleteProducer(int Id);
-    }
-    
     public class ActionProducer : IActionProducer
     {
         IAccessDB AccessDB;
