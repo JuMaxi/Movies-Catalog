@@ -20,7 +20,7 @@ namespace Movies_Catalogue.Controllers
         [HttpPost]
         public void AddActor(Actor NewActor)
         {
-            ActionActor.AddNewActor(NewActor);
+            ActionActor.NewActor(NewActor);
         }
 
         [HttpGet]

@@ -5,7 +5,7 @@ namespace Movies_Catalogue.Interfaces
 {
     public interface IActionActor
     {
-        void AddNewActor(Actor NewActor);
+        void NewActor(Actor NewActor);
         void DeleteActor(int Id);
         List<Actor> ShowActors();
         void UpdateActor(Actor Actor);

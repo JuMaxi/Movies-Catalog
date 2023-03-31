@@ -23,7 +23,7 @@ namespace Movies_Catalogue.Controllers
         [HttpPost]
         public void AddMovieGender(MovieGender NewGender)
         {
-            ActionMGender.AddNewGender(NewGender);
+            ActionMGender.NewGender(NewGender);
         }
 
         [HttpGet]

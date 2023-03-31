@@ -19,7 +19,7 @@ namespace Movies_Catalogue.Services
             ValidateMG = Validate;
         }
 
-        public void AddNewGender(MovieGender NewGender)
+        public void NewGender(MovieGender NewGender)
         {
             ValidateMG.ValidateGender(NewGender);
 

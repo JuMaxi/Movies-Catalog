@@ -19,7 +19,7 @@ namespace Movies_Catalogue.Services
             ValidateActor = validate;
         }
 
-        public void AddNewActor(Actor NewActor)
+        public void NewActor(Actor NewActor)
         {
             ValidateActor.Validate(NewActor);
 

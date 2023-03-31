@@ -20,7 +20,7 @@ namespace Movies_Catalogue.Services
             ValidateProducer = Validate;
         }
 
-        public void AddNewProducer(Producer NewProducer)
+        public void NewProducer(Producer NewProducer)
         {
             ValidateProducer.Validate(NewProducer);
 

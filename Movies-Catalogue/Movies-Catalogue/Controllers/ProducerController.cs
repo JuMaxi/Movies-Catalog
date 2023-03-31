@@ -23,7 +23,7 @@ namespace Movies_Catalogue.Controllers
         [HttpPost]
         public void AddProducer(Producer NewProducer)
         {
-            ActionProducer.AddNewProducer(NewProducer);
+            ActionProducer.NewProducer(NewProducer);
         }
 
         [HttpGet]

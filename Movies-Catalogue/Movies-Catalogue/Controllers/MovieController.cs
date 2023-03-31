@@ -22,9 +22,19 @@ namespace Movies_Catalogue.Controllers
         }
 
         [HttpPost]
-        public void AddMo(Movie Movie)
+        public void AddMovie(Movie Movie)
         {
             ActionMovie.NewMovie(Movie);
+        }
+
+        [HttpGet("{Id}")]
+        public Movie ShowMovie([FromRoute] int Id)
+        {
+            Movie Movie = new Movie();
+
+            Movie = ActionMovie.ShowMovie(Id);
+
+            return Movie;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Movies_Catalogue.Interfaces
 {
     public interface IActionMGender
     {
-        void AddNewGender(MovieGender NewGender);
+        void NewGender(MovieGender NewGender);
         List<MovieGender> ShowGender();
         void UpdateGender(MovieGender MovieGender);
         void DeleteGender(int Id);
