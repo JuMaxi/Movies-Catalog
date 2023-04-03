@@ -133,7 +133,7 @@ namespace Movies_Catalogue.Services
                 Movie.Id = Convert.ToInt32(Reader["Id"]);
                 Movie.Title = Reader["Title"].ToString();
                 Movie.CoverImage = Reader["CoverImage"].ToString();
-                Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]);
+                Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]).ToString("yyyy-MM-dd");
                 Movie.Rating = Convert.ToDouble(Reader["Rating"]);
                 Movie.Length = Convert.ToInt32(Reader["LengthM"]);
                 Movie.Origin = Reader["Origin"].ToString();
