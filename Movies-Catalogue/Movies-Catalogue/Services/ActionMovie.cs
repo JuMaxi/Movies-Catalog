@@ -27,7 +27,9 @@ namespace Movies_Catalogue.Services
             ValidateMo.CheckDataIds(New);
 
             string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
-            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
+
+            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + 
+                      "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
 
             AccessDB.AccessNonQuery(Insert1);
 
@@ -61,7 +63,8 @@ namespace Movies_Catalogue.Services
 
         private void AddBO(Movie New, int LastId)
         {
-            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
+            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + 
+                LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
 
             AccessDB.AccessNonQuery(Insert);
         }
@@ -87,7 +90,7 @@ namespace Movies_Catalogue.Services
         }
         private void RelationalMovieGender(Movie New, int LastId)
         {
-            foreach (var movieGender in New.GenderId)
+            foreach (var movieGender in New.MovieGender)
             {
                 string Insert = "insert into RelationalMovieGender (MovieId, GenderId) values(" + LastId + "," + movieGender.Id + ")";
 
@@ -96,23 +99,19 @@ namespace Movies_Catalogue.Services
         }
         private void RelationalMovieProducer(Movie New, int LastId)
         {
-            string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.ProducerId.Id + ")";
+            string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.Producer.Id + ")";
 
             AccessDB.AccessNonQuery(Insert);
         }
 
-        public Movie ShowMovie(int Id)
+        private string WriteSelect()
         {
-            int IdCompare = 0;
-            int ActorId = 0;
-            int GenderId = 0;
-
             string Select = "SELECT Movies.Id, Movies.Title, Movies.CoverImage, Movies.ReleaseDate, Movies.Rating, Movies.LengthM, Movies.Origin, " +
                 "MovieLocations.Location, " +
                 "BoxOffice.Budget, BoxOffice.RevenueOpeningWeek, BoxOffice.RevenueWorldWide, " +
                 "MovieCast.ActorId, Actors.Name, MovieCast.Role, " +
                 "RelationalMovieGender.GenderId, Genders.Gender, " +
-                "RelationalMovieProducer.ProducerId, Producer.Name " +
+                "RelationalMovieProducer.ProducerId, Producer.Name as ProducerName " +
                 "FROM Movies " +
                 "INNER JOIN MovieLocations ON Movies.Id = MovieLocations.MovieId " +
                 "INNER JOIN BoxOffice ON Movies.Id = BoxOffice.MovieId " +
@@ -121,84 +120,53 @@ namespace Movies_Catalogue.Services
                 "INNER JOIN RelationalMovieGender ON Movies.Id = RelationalMovieGender.MovieId " +
                 "INNER JOIN Genders ON RelationalMovieGender.GenderId = Genders.Id " +
                 "INNER JOIN RelationalMovieProducer ON Movies.Id = RelationalMovieProducer.MovieId " +
-                "INNER JOIN Producer ON RelationalMovieProducer.ProducerId = Producer.Id; ";
+                "INNER JOIN Producer ON RelationalMovieProducer.ProducerId = Producer.Id " +
+                "WHERE Movies.Id = ";
+
+            return Select;
+        }
+
+        private void ShowGeneralInfMovie(int IdCompare, Movie Movie, IDataReader Reader)
+        {
+            if (IdCompare != Convert.ToInt32(Reader["Id"]))
+            {
+                Movie.Id = Convert.ToInt32(Reader["Id"]);
+                Movie.Title = Reader["Title"].ToString();
+                Movie.CoverImage = Reader["CoverImage"].ToString();
+                Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]);
+                Movie.Rating = Convert.ToDouble(Reader["Rating"]);
+                Movie.Length = Convert.ToInt32(Reader["LengthM"]);
+                Movie.Origin = Reader["Origin"].ToString();
+
+                BoxOffice BoxOffice = new BoxOffice();
+                BoxOffice.Budget = Convert.ToDouble(Reader["Budget"]);
+                BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
+                BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
+                Movie.BoxOffice = BoxOffice;
+
+                Producer Producer = new Producer();
+                Producer.Id = Convert.ToInt32(Reader["ProducerId"]);
+                Producer.Name = Reader["ProducerName"].ToString();
+                Movie.Producer = Producer;
+            }
+        }
+        public Movie ShowMovie(int Id)
+        {
+            int IdCompare = 0;
+
+            string Select = WriteSelect() + Id;
 
             IDataReader Reader = AccessDB.AccessReader(Select);
             Movie Movie = new Movie();
 
             while (Reader.Read())
             {
-                List<string> ListLocations = new List<string>();
-                BoxOffice BoxOffice = new BoxOffice();
-                MovieCast MovieCast = new MovieCast();
-                List<MovieCast> ListMovieCast = new List<MovieCast>();
-                Actor Actors = new Actor();
-                MovieGender Genders = new MovieGender();
-                List<MovieGender> ListMovieGenders = new List<MovieGender>();
-                Producer Producer = new Producer();
-
-                int MovieId = Convert.ToInt32(Reader["Id"]);
-
-                if (IdCompare != MovieId)
-                {
-                    Movie.Id = MovieId;
-                    Movie.Title = Convert.ToString(Reader["Title"]);
-                    Movie.CoverImage = Convert.ToString(Reader["CoverImage"]);
-                    Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]);
-                    Movie.Rating = Convert.ToDouble(Reader["Rating"]);
-                    Movie.Length = Convert.ToInt32(Reader["LengthM"]);
-                    Movie.Origin = Convert.ToString(Reader["Origin"]);
-
-                    ListLocations.Add(Convert.ToString(Reader["Location"]));
-                    Movie.Locations = ListLocations;
-                    
-                    BoxOffice.Budget = Convert.ToDouble(Reader["Budget"]);
-                    BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
-                    BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
-                    Movie.BoxOffice= BoxOffice;
-
-                    ActorId = Convert.ToInt32(Reader["ActorId"]);
-                    MovieCast.ActorId = ActorId;
-                   // Actors.Name = Convert.ToString(Reader["Name"]);
-                    MovieCast.Role = Convert.ToString(Reader["Role"]);
-                    ListMovieCast.Add(MovieCast);
-                    Movie.MovieCast = ListMovieCast;
-
-                    GenderId = Convert.ToInt32(Reader["GenderId"]);
-                    Genders.Id = GenderId;
-                    Genders.Gender = Convert.ToString(Reader["Gender"]);
-                    ListMovieGenders.Add(Genders);
-                    Movie.GenderId = ListMovieGenders;
-
-                    Producer.Id = Convert.ToInt32(Reader["ProducerId"]);
-                    Producer.Name= Convert.ToString(Reader["Name"]);
-                    Movie.ProducerId = Producer;
-
-                    IdCompare = MovieId;
-                }
-                else
-                {
-                    Movie.Locations.Add(Convert.ToString(Reader["Location"]));
-
-                    if (ActorId != Convert.ToInt32(Reader["ActorId"]))
-                    {
-                        ActorId = Convert.ToInt32(Reader["ActorId"]);
-                        MovieCast.ActorId = ActorId;
-                        //Actors.Name = Convert.ToString(Reader["Name"]);
-                        MovieCast.Role = Convert.ToString(Reader["Role"]);
-                        ListMovieCast.Add(MovieCast);
-                        Movie.MovieCast.Add(ListMovieCast[0]);
-                    }
-                    if(GenderId != Convert.ToInt32(Reader["GenderId"]))
-                    {
-                        GenderId = Convert.ToInt32(Reader["GenderId"]);
-                        Genders.Id = GenderId;
-                        Genders.Gender = Convert.ToString(Reader["Gender"]);
-                        ListMovieGenders.Add(Genders);
-                        Movie.GenderId.Add(ListMovieGenders[0]);
-                    }
-                }
+                IdCompare = Movie.Id;
+                ShowGeneralInfMovie(IdCompare, Movie, Reader);
                
+                Movie.ShowFilmingLocation(Reader["Location"].ToString());
+                Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Role"].ToString());
+                Movie.ShowMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
             }
             return Movie;
         }
