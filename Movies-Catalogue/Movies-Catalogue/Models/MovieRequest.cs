@@ -16,7 +16,7 @@ namespace Movies_Catalogue.Models
         public List<string> Locations { get; set; }    
         public List<MovieCastRequest> MovieCast { get; set; } 
         public List<MovieGenderRequest> MovieGender { get; set; } 
-        public ProducerRequest Producer { get; set; }
+        public List<ProducerRequest> Producer { get; set; }
 
     }
 }

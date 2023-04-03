@@ -60,9 +60,19 @@ namespace Movies_Catalogue.Validators
             }
             else
             {
-                foreach (var Position in New.MovieGender)
+                if(TypeList == "Genders")
                 {
-                    ListId.Add(Position.Id);
+                    foreach (var Position in New.MovieGender)
+                    {
+                        ListId.Add(Position.Id);
+                    }
+                }
+                else
+                {
+                    foreach(var Position in New.Producer)
+                    {
+                        ListId.Add(Position.Id);
+                    }
                 }
             }
 
@@ -126,6 +136,15 @@ namespace Movies_Catalogue.Validators
             return Check;
         }
 
+        private int ValidateProducerId(MovieRequest NewMovie)
+        {
+            string Type = "Producer";
+
+            List<int> List = SelectTypeList(NewMovie, Type);
+            int Check = ReturnCountListIds(List, Type);
+
+            return Check;
+        }
         private int ValidateProducerId(ProducerRequest Producer)
         {
             string Select = "select * from Producer where Id=" + Producer.Id;
@@ -146,7 +165,7 @@ namespace Movies_Catalogue.Validators
         {
             int ActorId = ValidateActorId(New);
             int GenderId = ValidateGenderId(New);
-            int ProducerId = ValidateProducerId(New.Producer);
+            int ProducerId = ValidateProducerId(New);
 
             if (ActorId != New.MovieCast.Count)
             {
@@ -160,7 +179,7 @@ namespace Movies_Catalogue.Validators
                 }
                 else
                 {
-                    if (ProducerId != New.Producer.Id)
+                    if (ProducerId != New.Producer.Count)
                     {
                         throw new Exception("The Producer's Id is not valid. Fill out a valid Id do continue.");
                     }

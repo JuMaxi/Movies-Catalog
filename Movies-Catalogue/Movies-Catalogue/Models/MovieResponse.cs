@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Movies_Catalogue.Models
 {
@@ -17,13 +18,14 @@ namespace Movies_Catalogue.Models
         public List<string> Locations { get; set; }
         public List<MovieCastResponse> MovieCast { get; set; }
         public List<MovieGenderResponse> MovieGender { get; set; }
-        public ProducerResponse Producer { get; set; }
+        public List<ProducerResponse> Producers { get; set; }
 
         public MovieResponse()
         {
             Locations = new List<string>();
             MovieCast = new List<MovieCastResponse>();
             MovieGender = new List<MovieGenderResponse>();
+            Producers = new List<ProducerResponse>();
         }
 
         public void ShowFilmingLocation(string Location)
@@ -68,6 +70,22 @@ namespace Movies_Catalogue.Models
             InsertGender.GenderId = Id;
             InsertGender.Gender = Gender;
             MovieGender.Add(InsertGender);
+        }
+
+        public void ShowProducer(int Id, string Producer)
+        {
+            ProducerResponse InsertProducer = new ProducerResponse();
+
+            for(int Position = 0; Position < Producers.Count; Position++)
+            {
+                if (Producers[Position].ProducerId == Id) 
+                { 
+                    return;
+                }
+            }
+            InsertProducer.ProducerId = Id;
+            InsertProducer.ProducerName = Producer;
+            Producers.Add(InsertProducer);
         }
     }
 }

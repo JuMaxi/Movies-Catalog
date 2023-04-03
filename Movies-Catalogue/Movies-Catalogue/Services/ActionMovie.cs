@@ -99,9 +99,12 @@ namespace Movies_Catalogue.Services
         }
         private void RelationalMovieProducer(MovieRequest New, int LastId)
         {
-            string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.Producer.Id + ")";
+            foreach(var Producer in New.Producer)
+            {
+                string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + Producer.Id + ")";
 
-            AccessDB.AccessNonQuery(Insert);
+                AccessDB.AccessNonQuery(Insert);
+            }
         }
 
         private string WriteSelect()
@@ -143,11 +146,6 @@ namespace Movies_Catalogue.Services
                 BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
                 BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
                 Movie.BoxOffice = BoxOffice;
-
-                ProducerResponse Producer = new ProducerResponse();
-                Producer.ProducerId = Convert.ToInt32(Reader["ProducerId"]);
-                Producer.ProducerName = Reader["ProducerName"].ToString();
-                Movie.Producer = Producer;
             }
         }
         public MovieResponse ShowMovie(int Id)
@@ -167,6 +165,7 @@ namespace Movies_Catalogue.Services
                 Movie.ShowFilmingLocation(Reader["Location"].ToString());
                 Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Name"].ToString(), Reader["Role"].ToString());
                 Movie.ShowMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
+                Movie.ShowProducer(Convert.ToInt32(Reader["ProducerId"]), Reader["ProducerName"].ToString());
             }
             return Movie;
         }
