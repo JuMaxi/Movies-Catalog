@@ -21,7 +21,7 @@ namespace Movies_Catalogue.Services
             ValidateMo = Validate;
         }
 
-        public void NewMovie(Movie New)
+        public void NewMovie(MovieRequest New)
         {
             ValidateMo.Validate(New);
             ValidateMo.CheckDataIds(New);
@@ -61,7 +61,7 @@ namespace Movies_Catalogue.Services
             return LastId;
         }
 
-        private void AddBO(Movie New, int LastId)
+        private void AddBO(MovieRequest New, int LastId)
         {
             string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + 
                 LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
@@ -69,7 +69,7 @@ namespace Movies_Catalogue.Services
             AccessDB.AccessNonQuery(Insert);
         }
 
-        private void AddLocations(Movie New, int LastId)
+        private void AddLocations(MovieRequest New, int LastId)
         {
             foreach (var Location in New.Locations)
             {
@@ -79,7 +79,7 @@ namespace Movies_Catalogue.Services
             }
         }
 
-        private void AddActorRole(Movie New, int LastId)
+        private void AddActorRole(MovieRequest New, int LastId)
         {
             foreach (var Actor in New.MovieCast)
             {
@@ -88,7 +88,7 @@ namespace Movies_Catalogue.Services
                 AccessDB.AccessNonQuery(Insert);
             }
         }
-        private void RelationalMovieGender(Movie New, int LastId)
+        private void RelationalMovieGender(MovieRequest New, int LastId)
         {
             foreach (var movieGender in New.MovieGender)
             {
@@ -97,7 +97,7 @@ namespace Movies_Catalogue.Services
                 AccessDB.AccessNonQuery(Insert);
             }
         }
-        private void RelationalMovieProducer(Movie New, int LastId)
+        private void RelationalMovieProducer(MovieRequest New, int LastId)
         {
             string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + New.Producer.Id + ")";
 
@@ -126,7 +126,7 @@ namespace Movies_Catalogue.Services
             return Select;
         }
 
-        private void ShowGeneralInfMovie(int IdCompare, Movie Movie, IDataReader Reader)
+        private void ShowGeneralInfMovie(int IdCompare, MovieResponse Movie, IDataReader Reader)
         {
             if (IdCompare != Convert.ToInt32(Reader["Id"]))
             {
@@ -138,26 +138,26 @@ namespace Movies_Catalogue.Services
                 Movie.Length = Convert.ToInt32(Reader["LengthM"]);
                 Movie.Origin = Reader["Origin"].ToString();
 
-                BoxOffice BoxOffice = new BoxOffice();
+                BoxOfficeResponse BoxOffice = new BoxOfficeResponse();
                 BoxOffice.Budget = Convert.ToDouble(Reader["Budget"]);
                 BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
                 BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
                 Movie.BoxOffice = BoxOffice;
 
-                Producer Producer = new Producer();
-                Producer.Id = Convert.ToInt32(Reader["ProducerId"]);
-                Producer.Name = Reader["ProducerName"].ToString();
+                ProducerResponse Producer = new ProducerResponse();
+                Producer.ProducerId = Convert.ToInt32(Reader["ProducerId"]);
+                Producer.ProducerName = Reader["ProducerName"].ToString();
                 Movie.Producer = Producer;
             }
         }
-        public Movie ShowMovie(int Id)
+        public MovieResponse ShowMovie(int Id)
         {
             int IdCompare = 0;
 
             string Select = WriteSelect() + Id;
 
             IDataReader Reader = AccessDB.AccessReader(Select);
-            Movie Movie = new Movie();
+            MovieResponse Movie = new MovieResponse();
 
             while (Reader.Read())
             {
@@ -165,7 +165,7 @@ namespace Movies_Catalogue.Services
                 ShowGeneralInfMovie(IdCompare, Movie, Reader);
                
                 Movie.ShowFilmingLocation(Reader["Location"].ToString());
-                Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Role"].ToString());
+                Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Name"].ToString(), Reader["Role"].ToString());
                 Movie.ShowMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
             }
             return Movie;

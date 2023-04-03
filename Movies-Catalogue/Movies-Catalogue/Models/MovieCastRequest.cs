@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Movies_Catalogue.Models
 {
-    public class MovieCast
+    public class MovieCastRequest
     {
         public int Id { get; set; }
         public int ActorId { get; set; }

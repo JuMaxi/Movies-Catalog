@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Movies_Catalogue.Models
 {
-    public class Producer
+    public class ProducerRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }

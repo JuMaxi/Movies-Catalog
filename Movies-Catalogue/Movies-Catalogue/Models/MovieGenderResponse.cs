@@ -4,9 +4,9 @@ using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace Movies_Catalogue.Models
 {
-    public class MovieGender
+    public class MovieGenderResponse
     {
-        public int Id { get; set; }
+        public int GenderId { get; set; }
         public string Gender { get; set; }
 
     }

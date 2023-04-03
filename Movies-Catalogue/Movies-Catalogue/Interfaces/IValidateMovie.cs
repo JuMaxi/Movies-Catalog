@@ -4,7 +4,7 @@ namespace Movies_Catalogue.Interfaces
 {
     public interface IValidateMovie
     {
-        void Validate(Movie NewMovie);
-        void CheckDataIds(Movie New);
+        void Validate(MovieRequest NewMovie);
+        void CheckDataIds(MovieRequest New);
     }
 }

@@ -4,7 +4,7 @@ namespace Movies_Catalogue.Interfaces
 {
     public interface IActionMovie
     {
-        void NewMovie(Movie New);
-        Movie ShowMovie(int Id);
+        void NewMovie(MovieRequest New);
+        MovieResponse ShowMovie(int Id);
     }
 }

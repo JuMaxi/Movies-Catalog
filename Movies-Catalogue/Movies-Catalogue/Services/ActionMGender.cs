@@ -19,7 +19,7 @@ namespace Movies_Catalogue.Services
             ValidateMG = Validate;
         }
 
-        public void NewGender(MovieGender NewGender)
+        public void NewGender(MovieGenderRequest NewGender)
         {
             ValidateMG.ValidateGender(NewGender);
 
@@ -27,9 +27,9 @@ namespace Movies_Catalogue.Services
             AccessDB.AccessNonQuery(Insert);
         }
 
-        public List<MovieGender> ShowGender()
+        public List<MovieGenderRequest> ShowGender()
         {
-            List<MovieGender> ListGender = new List<MovieGender>();
+            List<MovieGenderRequest> ListGender = new List<MovieGenderRequest>();
 
             string Select = "select * from Genders";
 
@@ -37,7 +37,7 @@ namespace Movies_Catalogue.Services
 
             while (Reader.Read())
             {
-                MovieGender MovieGender = new MovieGender();
+                MovieGenderRequest MovieGender = new MovieGenderRequest();
 
                 MovieGender.Id = Convert.ToInt32(Reader["Id"]);
                 MovieGender.Gender = Convert.ToString(Reader["Gender"]);
@@ -46,7 +46,7 @@ namespace Movies_Catalogue.Services
             }
             return ListGender;
         }
-        public void UpdateGender(MovieGender MovieGender)
+        public void UpdateGender(MovieGenderRequest MovieGender)
         {
             string Update = "update Genders set Gender= '" + MovieGender.Gender + "' where Id= " + MovieGender.Id;
 

@@ -17,7 +17,7 @@ namespace Movies_Catalogue.Validators
             AccessDB = Access;
         }
 
-        public void Validate(Movie NewMovie)
+        public void Validate(MovieRequest NewMovie)
         {
             if (NewMovie.Title == null
                 || NewMovie.Title.Length == 0)
@@ -47,7 +47,7 @@ namespace Movies_Catalogue.Validators
             }
         }
 
-        private List<int> SelectTypeList(Movie New, string TypeList)
+        private List<int> SelectTypeList(MovieRequest New, string TypeList)
         {
             List<int> ListId = new List<int>();
 
@@ -107,7 +107,7 @@ namespace Movies_Catalogue.Validators
             }
             return Check;
         }
-        private int ValidateActorId(Movie NewMovie)
+        private int ValidateActorId(MovieRequest NewMovie)
         {
             string Type = "Actors";
 
@@ -116,7 +116,7 @@ namespace Movies_Catalogue.Validators
 
             return Check;
         }
-        private int ValidateGenderId(Movie NewMovie)
+        private int ValidateGenderId(MovieRequest NewMovie)
         {
             string Type = "Genders";
 
@@ -126,7 +126,7 @@ namespace Movies_Catalogue.Validators
             return Check;
         }
 
-        private int ValidateProducerId(Producer Producer)
+        private int ValidateProducerId(ProducerRequest Producer)
         {
             string Select = "select * from Producer where Id=" + Producer.Id;
 
@@ -142,7 +142,7 @@ namespace Movies_Catalogue.Validators
             return 0;
         }
 
-        public void CheckDataIds(Movie New)
+        public void CheckDataIds(MovieRequest New)
         {
             int ActorId = ValidateActorId(New);
             int GenderId = ValidateGenderId(New);

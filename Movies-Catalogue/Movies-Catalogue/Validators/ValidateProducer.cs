@@ -7,7 +7,7 @@ namespace Movies_Catalogue.Validators
 {
     public class ValidateProducer : IValidateProducer
     {
-        public void Validate(Producer Producer)
+        public void Validate(ProducerRequest Producer)
         {
             if(Producer.Name == null
                 || Producer.Name.Length == 0)

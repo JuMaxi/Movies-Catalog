@@ -21,21 +21,21 @@ namespace Movies_Catalogue.Controllers
         }
 
         [HttpPost]
-        public void AddMovieGender(MovieGender NewGender)
+        public void AddMovieGender(MovieGenderRequest NewGender)
         {
             ActionMGender.NewGender(NewGender);
         }
 
         [HttpGet]
-        public List<MovieGender> ShowMovieGenders()
+        public List<MovieGenderRequest> ShowMovieGenders()
         {
-            List<MovieGender> ListGender = new List<MovieGender>();
+            List<MovieGenderRequest> ListGender = new List<MovieGenderRequest>();
             ListGender = ActionMGender.ShowGender();
             return ListGender;
         }
 
         [HttpPut]
-        public void UpdateGender(MovieGender MovieGender)
+        public void UpdateGender(MovieGenderRequest MovieGender)
         {
             ActionMGender.UpdateGender(MovieGender);
         }

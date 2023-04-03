@@ -21,21 +21,21 @@ namespace Movies_Catalogue.Controllers
         }
 
         [HttpPost]
-        public void AddProducer(Producer NewProducer)
+        public void AddProducer(ProducerRequest NewProducer)
         {
             ActionProducer.NewProducer(NewProducer);
         }
 
         [HttpGet]
-        public List<Producer> ShowProducer()
+        public List<ProducerRequest> ShowProducer()
         {
-            List<Producer> ListProducer = new List<Producer>();
+            List<ProducerRequest> ListProducer = new List<ProducerRequest>();
             ListProducer = ActionProducer.ShowProducers();
             return ListProducer;
         }
 
         [HttpPut]
-        public void UpdateProducer(Producer Producer)
+        public void UpdateProducer(ProducerRequest Producer)
         {
             ActionProducer.UpdateProducer(Producer);
         }

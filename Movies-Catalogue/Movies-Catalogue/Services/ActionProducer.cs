@@ -20,7 +20,7 @@ namespace Movies_Catalogue.Services
             ValidateProducer = Validate;
         }
 
-        public void NewProducer(Producer NewProducer)
+        public void NewProducer(ProducerRequest NewProducer)
         {
             ValidateProducer.Validate(NewProducer);
 
@@ -29,9 +29,9 @@ namespace Movies_Catalogue.Services
             AccessDB.AccessNonQuery(Insert);
         }
 
-        public List<Producer> ShowProducers()
+        public List<ProducerRequest> ShowProducers()
         {
-            List<Producer> ListProducer = new List<Producer>();
+            List<ProducerRequest> ListProducer = new List<ProducerRequest>();
 
             string Select = "select * from Producer";
 
@@ -39,7 +39,7 @@ namespace Movies_Catalogue.Services
 
             while (Reader.Read())
             {
-                Producer Producer = new Producer();
+                ProducerRequest Producer = new ProducerRequest();
 
                 Producer.Id = Convert.ToInt32(Reader["Id"]);
                 Producer.Name = Convert.ToString(Reader["Name"]);
@@ -53,7 +53,7 @@ namespace Movies_Catalogue.Services
             return ListProducer;
         }
 
-        public void UpdateProducer(Producer Producer)
+        public void UpdateProducer(ProducerRequest Producer)
         {
             string Update = "Update Producer set Name='" + Producer.Name + "', EstablishedDate='" + Producer.EstablishedDate.ToString("yyyy-MM-dd") + "', Place='" + Producer.Place + "', NumberEmployees=" + Producer.NumberEmployees + ", Website='" + Producer.Website + "' where Id=" + Producer.Id;
 

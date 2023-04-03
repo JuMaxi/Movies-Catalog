@@ -7,7 +7,7 @@ namespace Movies_Catalogue.Validators
 {
     public class ValidateMovieGender : IValidateMovieGender
     {
-        public void ValidateGender(MovieGender gender)
+        public void ValidateGender(MovieGenderRequest gender)
         {
             if (gender.Gender == null
                 || gender.Gender.Length == 0)
