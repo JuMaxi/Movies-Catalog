@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using Movies_Catalogue.Interfacies;
 using Movies_Catalogue.Interfaces;
 using System.Data;
+using System.Runtime.CompilerServices;
 
 namespace Movies_Catalogue.Services
 {
@@ -28,7 +29,7 @@ namespace Movies_Catalogue.Services
 
             string Insert1 = "insert into Movies (Title, CoverImage, ReleaseDate, Rating, LengthM, Origin) values ('";
 
-            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") + 
+            Insert1 = Insert1 + New.Title + "','" + New.CoverImage + "','" + New.ReleaseDate.ToString("yyyy-MM-dd") +
                       "'," + New.Rating + "," + New.Length + ",'" + New.Origin + "')";
 
             AccessDB.AccessNonQuery(Insert1);
@@ -63,7 +64,7 @@ namespace Movies_Catalogue.Services
 
         private void AddBO(MovieRequest New, int LastId)
         {
-            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" + 
+            string Insert = "insert into BoxOffice (MovieId, Budget, RevenueOpeningWeek, RevenueWorldWide) values (" +
                 LastId + "," + New.BoxOffice.Budget + "," + New.BoxOffice.RevenueOpeningWeek + "," + New.BoxOffice.RevenueWorldWide + ")";
 
             AccessDB.AccessNonQuery(Insert);
@@ -99,7 +100,7 @@ namespace Movies_Catalogue.Services
         }
         private void RelationalMovieProducer(MovieRequest New, int LastId)
         {
-            foreach(var Producer in New.Producer)
+            foreach (var Producer in New.Producer)
             {
                 string Insert = "insert into RelationalMovieProducer (MovieId, ProducerId) values(" + LastId + "," + Producer.Id + ")";
 
@@ -161,13 +162,53 @@ namespace Movies_Catalogue.Services
             {
                 IdCompare = Movie.Id;
                 ShowGeneralInfMovie(IdCompare, Movie, Reader);
-               
+
                 Movie.ShowFilmingLocation(Reader["Location"].ToString());
                 Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Name"].ToString(), Reader["Role"].ToString());
                 Movie.ShowMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
                 Movie.ShowProducer(Convert.ToInt32(Reader["ProducerId"]), Reader["ProducerName"].ToString());
             }
             return Movie;
+        }
+        private List<int> ReturnListIds(int Page, int Size)
+        {
+            
+            string SelectRow = "With Rows as " +
+                "(select row_number() over (order by Id) as Row, Id from Movies)" +
+                "select Id, Row from Rows where Row Between " + ((Size * Page) - (Size - 1)) + " and " + (Size * Page);
+
+            IDataReader Reader = AccessDB.AccessReader(SelectRow);
+
+            List<int> Ids = new List<int>();
+            while (Reader.Read())
+            {
+                int Id = Convert.ToInt32(Reader["Id"]);
+                Ids.Add(Id);
+            }
+            return Ids;
+        }
+
+        public List<MovieResponse> ShowListMovies(int Page, int Size)
+        {
+            if(Page == 0)
+            {
+                Page = 1;
+            }
+            if(Size == 0)
+            {
+                Size = 4;
+            }
+
+            List<int> ListIds = ReturnListIds(Page, Size);
+            List<MovieResponse> ListMovies = new List<MovieResponse>();
+
+            foreach (int Id in ListIds)
+            {
+                MovieResponse Movie = ShowMovie(Id);
+                ListMovies.Add(Movie);
+            }
+
+            return ListMovies;
         }
     }
 

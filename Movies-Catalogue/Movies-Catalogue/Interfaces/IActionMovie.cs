@@ -1,4 +1,5 @@
 ﻿using Movies_Catalogue.Models;
+using System.Collections.Generic;
 
 namespace Movies_Catalogue.Interfaces
 {
@@ -6,5 +7,7 @@ namespace Movies_Catalogue.Interfaces
     {
         void NewMovie(MovieRequest New);
         MovieResponse ShowMovie(int Id);
+
+        List<MovieResponse> ShowListMovies(int Page, int Size);
     }
 }

@@ -15,10 +15,10 @@ namespace Movies_Catalogue.Controllers
     public class MovieController : ControllerBase
     {
         IActionMovie ActionMovie;
-        public MovieController(IActionMovie Movie) 
+        public MovieController(IActionMovie Movie)
         {
             ActionMovie = Movie;
-            
+
         }
 
         [HttpPost]
@@ -35,6 +35,14 @@ namespace Movies_Catalogue.Controllers
             Movie = ActionMovie.ShowMovie(Id);
 
             return Movie;
+        }
+
+        [HttpGet]
+        public List<MovieResponse> ShowListMovies([FromQuery] int Page, int Size)
+        {
+            List<MovieResponse> MoviesList = ActionMovie.ShowListMovies(Page, Size);
+
+            return MoviesList;
         }
     }
 }
