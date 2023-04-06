@@ -7,6 +7,7 @@ using Movies_Catalogue.Interfacies;
 using Movies_Catalogue.Interfaces;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace Movies_Catalogue.Services
 {
@@ -125,88 +126,105 @@ namespace Movies_Catalogue.Services
                 "INNER JOIN Genders ON RelationalMovieGender.GenderId = Genders.Id " +
                 "INNER JOIN RelationalMovieProducer ON Movies.Id = RelationalMovieProducer.MovieId " +
                 "INNER JOIN Producer ON RelationalMovieProducer.ProducerId = Producer.Id " +
-                "WHERE Movies.Id = ";
+                "WHERE Movies.Id  ";
 
             return Select;
         }
-
-        private void ShowGeneralInfMovie(int IdCompare, MovieResponse Movie, IDataReader Reader)
+        private string WriteSelecListMovies(int Page, int Size)
         {
-            if (IdCompare != Convert.ToInt32(Reader["Id"]))
-            {
-                Movie.Id = Convert.ToInt32(Reader["Id"]);
-                Movie.Title = Reader["Title"].ToString();
-                Movie.CoverImage = Reader["CoverImage"].ToString();
-                Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]).ToString("yyyy-MM-dd");
-                Movie.Rating = Convert.ToDouble(Reader["Rating"]);
-                Movie.Length = Convert.ToInt32(Reader["LengthM"]);
-                Movie.Origin = Reader["Origin"].ToString();
+            string Select = WriteSelect();
 
-                BoxOfficeResponse BoxOffice = new BoxOfficeResponse();
-                BoxOffice.Budget = Convert.ToDouble(Reader["Budget"]);
-                BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
-                BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
-                Movie.BoxOffice = BoxOffice;
-            }
-        }
-        public MovieResponse ShowMovie(int Id)
-        {
-            int IdCompare = 0;
-
-            string Select = WriteSelect() + Id;
-
-            IDataReader Reader = AccessDB.AccessReader(Select);
-            MovieResponse Movie = new MovieResponse();
-
-            while (Reader.Read())
-            {
-                IdCompare = Movie.Id;
-                ShowGeneralInfMovie(IdCompare, Movie, Reader);
-
-                Movie.ShowFilmingLocation(Reader["Location"].ToString());
-                Movie.ShowMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Name"].ToString(), Reader["Role"].ToString());
-                Movie.ShowMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
-                Movie.ShowProducer(Convert.ToInt32(Reader["ProducerId"]), Reader["ProducerName"].ToString());
-            }
-            return Movie;
-        }
-        private List<int> ReturnListIds(int Page, int Size)
-        {
-            
-            string SelectRow = "With Rows as " +
-                "(select row_number() over (order by Id) as Row, Id from Movies)" +
-                "select Id, Row from Rows where Row Between " + ((Size * Page) - (Size - 1)) + " and " + (Size * Page);
-
-            IDataReader Reader = AccessDB.AccessReader(SelectRow);
-
-            List<int> Ids = new List<int>();
-            while (Reader.Read())
-            {
-                int Id = Convert.ToInt32(Reader["Id"]);
-                Ids.Add(Id);
-            }
-            return Ids;
-        }
-
-        public List<MovieResponse> ShowListMovies(int Page, int Size)
-        {
-            if(Page == 0)
+            if (Page == 0)
             {
                 Page = 1;
             }
-            if(Size == 0)
+            if (Size == 0)
             {
                 Size = 4;
             }
 
-            List<int> ListIds = ReturnListIds(Page, Size);
+            string WhereIds = "IN (SELECT Id FROM Movies ORDER BY ID OFFSET " + ((Size * Page) - Size) + " ROWS FETCH NEXT " + Size + " ROWS ONLY)";
+            Select = Select + WhereIds;
+
+            return Select;
+        }
+        private bool CheckId(int IdCompare, IDataReader Reader)
+        {
+            if (IdCompare != Convert.ToInt32(Reader["Id"]))
+            {
+                return true;
+            }
+            return false;
+        }
+        private void ShowGeneralInfMovie(MovieResponse Movie, IDataReader Reader)
+        {
+            Movie.Id = Convert.ToInt32(Reader["Id"]);
+            Movie.Title = Reader["Title"].ToString();
+            Movie.CoverImage = Reader["CoverImage"].ToString();
+            Movie.ReleaseDate = Convert.ToDateTime(Reader["ReleaseDate"]).ToString("yyyy-MM-dd");
+            Movie.Rating = Convert.ToDouble(Reader["Rating"]);
+            Movie.Length = Convert.ToInt32(Reader["LengthM"]);
+            Movie.Origin = Reader["Origin"].ToString();
+
+            BoxOfficeResponse BoxOffice = new BoxOfficeResponse();
+            BoxOffice.Budget = Convert.ToDouble(Reader["Budget"]);
+            BoxOffice.RevenueOpeningWeek = Convert.ToDouble(Reader["RevenueOpeningWeek"]);
+            BoxOffice.RevenueWorldWide = Convert.ToDouble(Reader["RevenueWorldWide"]);
+            Movie.BoxOffice = BoxOffice;
+
+            CallMethods(Reader, Movie);
+        }
+        private void CallMethods(IDataReader Reader, MovieResponse Movie)
+        {
+            Movie.AddFilmingLocation(Reader["Location"].ToString());
+            Movie.AddMovieCast(Convert.ToInt32(Reader["ActorId"]), Reader["Name"].ToString(), Reader["Role"].ToString());
+            Movie.AddMovieGender(Convert.ToInt32(Reader["GenderId"]), Reader["Gender"].ToString());
+            Movie.AddProducer(Convert.ToInt32(Reader["ProducerId"]), Reader["ProducerName"].ToString());
+        }
+        public MovieResponse ShowMovie(int Id)
+        {
+            string Select = WriteSelect() + " = " + Id;
+
+            IDataReader Reader = AccessDB.AccessReader(Select);
+            MovieResponse Movie = new MovieResponse();
+
+            List<MovieResponse> MovieL = ReturnListMovies(Reader, Movie);
+
+            return MovieL[0];
+        }
+       
+        private List<MovieResponse> ReturnListMovies(IDataReader Reader, MovieResponse Movie)
+        {
+            int IdCompare = 0;
+
             List<MovieResponse> ListMovies = new List<MovieResponse>();
 
-            foreach (int Id in ListIds)
+            while (Reader.Read())
             {
-                MovieResponse Movie = ShowMovie(Id);
-                ListMovies.Add(Movie);
+                IdCompare = Movie.Id;
+                if (CheckId(IdCompare, Reader) == true)
+                {
+                    Movie = new MovieResponse();
+                    ShowGeneralInfMovie(Movie, Reader);
+                    ListMovies.Add(Movie);
+                }
+                else
+                {
+                    CallMethods(Reader, Movie);
+                }
             }
+            return ListMovies;
+        }
+      
+        public List<MovieResponse> ShowListMovies(int Page, int Size)
+        {
+            string Select = WriteSelecListMovies(Page, Size);
+
+            IDataReader Reader = AccessDB.AccessReader(Select);
+            List<MovieResponse> ListMovies = new List<MovieResponse>();
+            MovieResponse Movie = new MovieResponse();
+
+            ListMovies = ReturnListMovies(Reader, Movie);
 
             return ListMovies;
         }

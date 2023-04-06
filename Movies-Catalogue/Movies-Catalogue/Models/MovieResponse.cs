@@ -28,7 +28,7 @@ namespace Movies_Catalogue.Models
             Producers = new List<ProducerResponse>();
         }
 
-        public void ShowFilmingLocation(string Location)
+        public void AddFilmingLocation(string Location)
         {
             for (int Position = 0; Position < Locations.Count; Position++)
             {
@@ -40,7 +40,7 @@ namespace Movies_Catalogue.Models
             Locations.Add(Location);
         }
 
-        public void ShowMovieCast(int Id, string Role, string ActorName)
+        public void AddMovieCast(int Id, string Role, string ActorName)
         {
             MovieCastResponse InsertRole = new MovieCastResponse();
             for (int Position = 0; Position < MovieCast.Count; Position++)
@@ -56,7 +56,7 @@ namespace Movies_Catalogue.Models
             MovieCast.Add(InsertRole);
         }
 
-        public void ShowMovieGender(int Id, string Gender)
+        public void AddMovieGender(int Id, string Gender)
         {
             MovieGenderResponse InsertGender = new MovieGenderResponse();
 
@@ -72,7 +72,7 @@ namespace Movies_Catalogue.Models
             MovieGender.Add(InsertGender);
         }
 
-        public void ShowProducer(int Id, string Producer)
+        public void AddProducer(int Id, string Producer)
         {
             ProducerResponse InsertProducer = new ProducerResponse();
 

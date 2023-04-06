@@ -30,9 +30,7 @@ namespace Movies_Catalogue.Controllers
         [HttpGet("{Id}")]
         public MovieResponse ShowMovie([FromRoute] int Id)
         {
-            MovieResponse Movie = new MovieResponse();
-
-            Movie = ActionMovie.ShowMovie(Id);
+            MovieResponse Movie = ActionMovie.ShowMovie(Id);
 
             return Movie;
         }

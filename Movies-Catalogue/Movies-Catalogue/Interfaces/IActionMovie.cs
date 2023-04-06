@@ -8,6 +8,6 @@ namespace Movies_Catalogue.Interfaces
         void NewMovie(MovieRequest New);
         MovieResponse ShowMovie(int Id);
 
-        List<MovieResponse> ShowListMovies(int Page, int Size);
+        public List<MovieResponse> ShowListMovies(int Page, int Size);
     }
 }
