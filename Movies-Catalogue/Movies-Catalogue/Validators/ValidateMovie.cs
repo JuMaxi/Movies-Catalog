@@ -38,7 +38,7 @@ namespace Movies_Catalogue.Validators
             }
             if (NewMovie.Length == 0)
             {
-                throw new Exception("The Movie's Length is mandatory and must be bigger than zero. Fill out this field with a valid value to continue");
+                throw new Exception("The Movie's Length is mandatory and must be bigger than zero. Fill out this field with a valid value to continue.");
             }
             if (NewMovie.Origin == null
                 || NewMovie.Origin.Length == 0)
@@ -144,21 +144,6 @@ namespace Movies_Catalogue.Validators
             int Check = ReturnCountListIds(List, Type);
 
             return Check;
-        }
-        private int ValidateProducerId(ProducerRequest Producer)
-        {
-            string Select = "select * from Producer where Id=" + Producer.Id;
-
-            var Reader = AccessDB.AccessReader(Select);
-
-            while (Reader.Read())
-            {
-                if (Producer.Id == Convert.ToInt32(Reader["Id"]))
-                {
-                    return Producer.Id;
-                }
-            }
-            return 0;
         }
 
         public void CheckDataIds(MovieRequest New)
